@@ -34,7 +34,7 @@ public class RobotContainer {
         new Drive(
             () -> j1.getRawAxis(1),
             () -> -j1.getRawAxis(0),
-            () -> j1.getRawAxis(4)*0.6 ,
+            () -> j1.getRawAxis(4)*0.8 ,
             () -> j1.getRawButton(0)));
       
     }

@@ -86,7 +86,9 @@ public class SwerveModule extends SubsystemBase{
         desiredState.optimize( getState().angle);
 
         double speedPower = (desiredState.speedMetersPerSecond / Constants.MAX_SPEED) * (isRight? -1 : 1);
-        setSpeedPower(MathUtil.clamp(speedPower, -0.30, 0.30));
+        SmartDashboard.putNumber("SET PRE-Speed mod n".concat(String.valueOf(moduleNumber)), speedPower);
+        setSpeedPower(MathUtil.clamp(speedPower, -Constants.MAX_POWER, Constants.MAX_POWER));
+        SmartDashboard.putNumber("SET CLAMPED-speed mod n".concat(String.valueOf(moduleNumber)), speedPower);
 
         double setpoint = desiredState.angle.getDegrees();
         double measure = getState().angle.getDegrees();

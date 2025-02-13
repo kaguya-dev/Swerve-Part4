@@ -105,10 +105,11 @@ public class Constants {
 
     // Maximum Speed
     public static final double MAX_SPEED = 1;
+    public static final double MAX_POWER = 0.5;
     public static final double MAX_ANGULAR_SPEED = 1;
 
     //DEADBANDS
-    public static final double JOY_DEADBAND = 0.04;
+    public static final double JOY_DEADBAND = 0.05;
 
 
     // PID Constants
