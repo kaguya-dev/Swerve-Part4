@@ -27,7 +27,10 @@ public class DriveSubsystem extends SubsystemBase {
             new SwerveModule(Constants.SwerveModulesContants.MOD1),
             new SwerveModule(Constants.SwerveModulesContants.MOD2),
             new SwerveModule(Constants.SwerveModulesContants.MOD3) };
-
+        
+        swerveMods[1].isRight(true);
+        swerveMods[3].isRight(true);
+            
         swerveOdometry = new SwerveDriveOdometry(Constants.kDriveKinematics, RobotContainer.getGyroAngleAsR2D(),
                 getPositions());
 

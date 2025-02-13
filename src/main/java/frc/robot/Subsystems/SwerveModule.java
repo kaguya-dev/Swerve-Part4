@@ -26,6 +26,7 @@ public class SwerveModule extends SubsystemBase{
     private CANcoder absoluteEncoder;
     private RelativeEncoder speedEncoder;
     private PIDController pidController;
+    private boolean isRight;
     private int moduleNumber;
 
     public SwerveModule(SwerveModulesContants moduleID){
@@ -36,8 +37,9 @@ public class SwerveModule extends SubsystemBase{
         this.moduleNumber = moduleID.getModuleNumber();
         this.moduleState = new SwerveModuleState();
         updateState();
-        pidController = RobotContainer.pid;
-        pidController.setTolerance(0.1);
+        this.pidController = new PIDController(Constants.KP_Swerve_ANGLE, Constants.KI_Swerve_ANGLE, Constants.KD_Swerve_ANGLE);
+        pidController.setIZone(5);
+        pidController.setTolerance(1);
     }
 
     @Override
@@ -73,10 +75,17 @@ public class SwerveModule extends SubsystemBase{
         turnMotor.set(power);
     }
 
+    public void isRight(boolean right){
+        if(right)
+            isRight = true;
+        else   
+            isRight = false;
+    }
+
     public void setDesiredState(SwerveModuleState desiredState) {
         desiredState.optimize( getState().angle);
 
-        double speedPower = desiredState.speedMetersPerSecond / Constants.MAX_SPEED;
+        double speedPower = (desiredState.speedMetersPerSecond / Constants.MAX_SPEED) * (isRight? -1 : 1);
         setSpeedPower(MathUtil.clamp(speedPower, -0.30, 0.30));
 
         double setpoint = desiredState.angle.getDegrees();

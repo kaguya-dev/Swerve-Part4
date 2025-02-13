@@ -14,29 +14,29 @@ public class Constants {
     public static final double kTurningMotorGearRatio = 21.43; // Relação de transmissão do motor de rotação
 
     public enum SwerveModulesContants {
-        MOD0(// Front Left
+        MOD0(// Front Left (Inverted)
                 MOTOR_LEFT_ANGULAR_FRONT,
                 MOTOR_LEFT_DRIVER_FRONT,
                 CANCODER_FRONT_LEFT,
-                0),
+                2),
 
-        MOD1(// Front Right
+        MOD1(// Front Right (Inverted)
                 MOTOR_RIGHT_ANGULAR_FRONT,
                 MOTOR_RIGHT_DRIVER_FRONT,
                 CANCODER_FRONT_RIGHT,
-                1),
+                3),
 
-        MOD2(
+        MOD2(// Back Left (Inverted)
                 MOTOR_LEFT_ANGULAR_BACK,
                 MOTOR_LEFT_DRIVER_BACK,
                 CANCODER_BACK_LEFT,
-                2),
+                0),
 
-        MOD3(
+        MOD3(// Back Right (Inverted)
                 MOTOR_RIGHT_ANGULAR_BACK,
                 MOTOR_RIGHT_DRIVER_BACK,
                 CANCODER_BACK_RIGHT,
-                3);
+                1);
 
         public int getModuleNumber() {
             return moduleNumber;
@@ -104,8 +104,8 @@ public class Constants {
     public static final int PIGEON_ID = 15;
 
     // Maximum Speed
-    public static final double MAX_SPEED = 0.4;
-    public static final double MAX_ANGULAR_SPEED = 0.5;
+    public static final double MAX_SPEED = 1;
+    public static final double MAX_ANGULAR_SPEED = 1;
 
     //DEADBANDS
     public static final double JOY_DEADBAND = 0.04;
@@ -113,9 +113,9 @@ public class Constants {
 
     // PID Constants
     // PID Constants for Swerve
-    public static final double KP_Swerve_ANGLE = 0.002;
+    public static final double KP_Swerve_ANGLE = 0.005;
     public static final double KI_Swerve_ANGLE = 0.0000001;
-    public static final double KD_Swerve_ANGLE = 0.00015;
+    public static final double KD_Swerve_ANGLE = 0.0001;
 
     public static final double[] PIDSwerve = { KP_Swerve_ANGLE, KI_Swerve_ANGLE, KD_Swerve_ANGLE };
 

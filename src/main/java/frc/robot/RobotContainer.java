@@ -21,13 +21,11 @@ import frc.robot.Subsystems.DriveSubsystem;
 public class RobotContainer {
   public ChassisSpeeds swerveChassis;
   public static Pigeon2 gyro;
-  public static PIDController pid;
   public static DriveSubsystem driver;
   public GenericHID j1;
   
     public RobotContainer() {
       gyro = new Pigeon2(Constants.PIGEON_ID);
-      pid = new PIDController(Constants.KP_Swerve_ANGLE, Constants.KI_Swerve_ANGLE, Constants.KD_Swerve_ANGLE);
       driver = new DriveSubsystem();
       j1 = new GenericHID(Constants.JOY_PORT);
       configureBindings();
@@ -35,7 +33,7 @@ public class RobotContainer {
       driver.setDefaultCommand(
         new Drive(
             () -> j1.getRawAxis(1),
-            () -> j1.getRawAxis(0),
+            () -> -j1.getRawAxis(0),
             () -> j1.getRawAxis(4)*0.6 ,
             () -> j1.getRawButton(0)));
       
