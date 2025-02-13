@@ -108,14 +108,14 @@ public class Constants {
     public static final double MAX_ANGULAR_SPEED = 0.5;
 
     //DEADBANDS
-    public static final double JOY_DEADBAND = 0.05;
+    public static final double JOY_DEADBAND = 0.04;
 
 
     // PID Constants
     // PID Constants for Swerve
     public static final double KP_Swerve_ANGLE = 0.002;
     public static final double KI_Swerve_ANGLE = 0.0000001;
-    public static final double KD_Swerve_ANGLE = 0.0;
+    public static final double KD_Swerve_ANGLE = 0.00015;
 
     public static final double[] PIDSwerve = { KP_Swerve_ANGLE, KI_Swerve_ANGLE, KD_Swerve_ANGLE };
 

@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
-@Logged (name = "Drive")
+@Logged(name = "Drive")
 public class Drive extends Command {
-    
+
     private final DoubleSupplier mVxSupplier;
     private final DoubleSupplier mVySupplier;
     private final DoubleSupplier mOmegaSupplier;
@@ -27,7 +27,6 @@ public class Drive extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        // TODO Auto-generated method stub
         super.end(interrupted);
     }
 
@@ -37,20 +36,15 @@ public class Drive extends Command {
         double yInput = mVySupplier.getAsDouble();
         double omegaInput = mOmegaSupplier.getAsDouble();
 
-        // driveControlTelemetry(xInput, yInput, omegaInput);
-
         RobotContainer.driver.drive(
                 xInput * Constants.MAX_SPEED,
                 yInput * Constants.MAX_SPEED,
                 omegaInput * Constants.MAX_ANGULAR_SPEED,
                 mFieldCentrSupplier.getAsBoolean());
-
     }
 
     @Override
     public void initialize() {
-        // TODO Auto-generated method stub
         super.initialize();
     }
-
 }

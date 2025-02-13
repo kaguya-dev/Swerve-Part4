@@ -37,6 +37,7 @@ public class SwerveModule extends SubsystemBase{
         this.moduleState = new SwerveModuleState();
         updateState();
         pidController = RobotContainer.pid;
+        pidController.setTolerance(0.1);
     }
 
     @Override
@@ -45,9 +46,8 @@ public class SwerveModule extends SubsystemBase{
     }
 
     private void updateState(){
-
         moduleState.angle = getAngleInR2D();
-        moduleState.speedMetersPerSecond = (speedEncoder.getVelocity() * Constants.kWheelCircuferenceMeters)/60;
+        moduleState.speedMetersPerSecond = (speedEncoder.getVelocity() * Constants.kWheelCircuferenceMeters) / 60;
     }
 
     public SwerveModuleState getState(){
@@ -60,9 +60,8 @@ public class SwerveModule extends SubsystemBase{
     }
 
     private Rotation2d getAngleInR2D(){
-        //Rotation2d angleOffset = new Rotation2d(90);
         SmartDashboard.putNumber("Angle mod n".concat(String.valueOf(moduleNumber)), 
-            absoluteEncoder.getAbsolutePosition().getValue().magnitude() *360);
+            absoluteEncoder.getAbsolutePosition().getValue().magnitude() * 360);
         return new Rotation2d(absoluteEncoder.getAbsolutePosition().getValue());
     }
 
@@ -75,31 +74,30 @@ public class SwerveModule extends SubsystemBase{
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {
-
-        desiredState.optimize(getState().angle);
+        desiredState.optimize( getState().angle);
 
         double speedPower = desiredState.speedMetersPerSecond / Constants.MAX_SPEED;
+        setSpeedPower(MathUtil.clamp(speedPower, -0.30, 0.30));
 
-        if(speedPower >= 0)
-            setSpeedPower(MathUtil.clamp(speedPower, 0, 0.20));
-        else    
-            setSpeedPower(MathUtil.clamp(speedPower, -0.20, 0));
-        setTurnPosition(transform(desiredState.angle.getDegrees()), transform(getState().angle.getDegrees())); // Rotation2d angle does not
-                                                                                         // give degrees
-    }
+        double setpoint = desiredState.angle.getDegrees();
+        double measure = getState().angle.getDegrees();
 
-    public void setTurnPosition(double setpoint, double measure){
-        SmartDashboard.putNumber("SET Angle mod n".concat(String.valueOf(moduleNumber)), 
-        pidController.calculate(measure, setpoint));
-        turnMotor.set(pidController.calculate(measure, setpoint));
+        double error = setpoint - measure;
+        if (Math.abs(error) > 180) {
+            if (error > 0) {
+                setpoint -= 360;
+            } else {
+                setpoint += 360;
+            }
+        }
+
+        double pidValue = pidController.calculate(measure, setpoint);
+
+        SmartDashboard.putNumber("SET Angle mod n".concat(String.valueOf(moduleNumber)), pidValue);
+        setTurnSpeed(pidValue);
     }
 
     public int getModuleNumber(){
         return moduleNumber;
     }
-
-    public static double transform(double x) {
-        double result = Math.IEEEremainder(x + 180, 360);
-        return result < 0 ? result + 360 : result; // Ensure it's in [0, 359]
-    }
-}   
+}
