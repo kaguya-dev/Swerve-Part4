@@ -2,11 +2,12 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.GenericHID;
 
 public class Constants {
 
-    public static final double kTrackWidth = 0.58;
-    public static final double kWheelBase = 0.60;
+    public static final double kTrackWidth = 0.632;
+    public static final double kWheelBase = 0.632;
     public static final double kWheelDiameterMeters = 0.1016; // Diâmetro da roda em metros (4 polegadas convertidas
                                                               // para metros)
     public static final double kWheelCircuferenceMeters = kWheelDiameterMeters * Math.PI;
@@ -105,7 +106,7 @@ public class Constants {
 
     // Maximum Speed
     public static final double MAX_SPEED = 1;
-    public static final double MAX_POWER = 0.5;
+    public static final double MAX_POWER = 0.3;
     public static final double MAX_ANGULAR_SPEED = 1;
 
     //DEADBANDS

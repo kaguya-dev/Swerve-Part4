@@ -33,7 +33,7 @@ public class SwerveModule extends SubsystemBase{
         this.turnMotor = new SparkMax(moduleID.getAngleMotorID(), MotorType.kBrushless);
         this.speedMotor = new SparkMax(moduleID.getDriveMotorID(), MotorType.kBrushless);
         this.absoluteEncoder = new CANcoder(moduleID.getCancoderID());
-        this.speedEncoder = speedMotor.getAlternateEncoder();
+        this.speedEncoder = speedMotor.getEncoder();
         this.moduleNumber = moduleID.getModuleNumber();
         this.moduleState = new SwerveModuleState();
         updateState();
@@ -49,7 +49,11 @@ public class SwerveModule extends SubsystemBase{
 
     private void updateState(){
         moduleState.angle = getAngleInR2D();
-        moduleState.speedMetersPerSecond = (speedEncoder.getVelocity() * Constants.kWheelCircuferenceMeters) / 60;
+        double stateSpeed = (speedEncoder.getVelocity() * Constants.kWheelCircuferenceMeters) / 60;
+
+        moduleState.speedMetersPerSecond = stateSpeed;
+
+        SmartDashboard.putNumber("Speed mod n".concat(String.valueOf(this.moduleNumber)), stateSpeed);
     }
 
     public SwerveModuleState getState(){
