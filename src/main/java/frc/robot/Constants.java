@@ -101,7 +101,8 @@ public class Constants {
     public static final int CANCODER_BACK_RIGHT = 14;
 
     // Joystick & Pigeon Configuration
-    public static final int JOY_PORT = 0;
+    public static final int DRIVEJOY_PORT = 0;
+    public static final int SCOREJOY_PORT = 0;
     public static final int PIGEON_ID = 15;
 
     // Maximum Speed
@@ -131,4 +132,12 @@ public class Constants {
     public static final double intakeKP = 0.01;
     public static final double intakeKI = 0;
     public static final double intakeKD = 0;
+
+    //INTAKE values
+    public static final double coralIntakePower = 0.75;
+    public static final double algaeIntakePower = 0.50;
+
+    //Elevator Sybsystem IDs
+    public static final int leftElevatorMotor = 0;
+    public static final int rightElevatorMotor = 0;
 }

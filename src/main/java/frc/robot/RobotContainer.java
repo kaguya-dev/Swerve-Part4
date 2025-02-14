@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.Drive;
 import frc.robot.Subsystems.DriveSubsystem;
 import frc.robot.Subsystems.IMUSubsystem;
+import frc.robot.Subsystems.IntakeSubsystem;
 
 @Logged(name = "Container")
 public class RobotContainer {
@@ -30,22 +31,24 @@ public class RobotContainer {
   public ChassisSpeeds swerveChassis;
   public static DriveSubsystem driver;
   public static IMUSubsystem imu;
-  public GenericHID j1;
-  public PS5Controller ps1;
+  public static IntakeSubsystem scoreIntake;
+  public GenericHID j1, j2;
+  public PS5Controller ps1, ps2;
 
   public RobotContainer() {
     imu = new IMUSubsystem();
     driver = new DriveSubsystem();
-    j1 = new GenericHID(Constants.JOY_PORT);
+    scoreIntake = new IntakeSubsystem();
+    j1 = new GenericHID(Constants.DRIVEJOY_PORT);
+    j2 = new GenericHID(Constants.SCOREJOY_PORT);
     configureBindings();
-
 
     driver.setDefaultCommand(
         new Drive(
             () -> j1.getRawAxis(1),
             () -> -j1.getRawAxis(0),
-            () -> j1.getRawAxis(4) * 0.8,
-            () -> true));
+            () -> j1.getRawAxis(4) * 0.6,
+            () -> imu.isIMUFound()));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -60,6 +63,18 @@ public class RobotContainer {
   private void configureBindings() {
 
     new JoystickButton(j1, 2).whileTrue(Commands.run(() -> imu.resetYaw()));
+
+    new JoystickButton(j2, 3)
+        .onTrue(Commands.run(() -> scoreIntake.coralIntake(Constants.coralIntakePower)))
+        .onFalse(Commands.run(() -> scoreIntake.coralDisable()));
+
+    new JoystickButton(j2, 2)
+        .onTrue(Commands.run(() -> scoreIntake.algaeIntake(Constants.algaeIntakePower, true)))
+        .onFalse(Commands.run(() -> scoreIntake.algaeIntakeDisable()));
+
+    new JoystickButton(j2, 1)
+        .onTrue(Commands.run(() -> scoreIntake.algaeIntake(Constants.algaeIntakePower, false)))
+        .onFalse(Commands.run(() -> scoreIntake.algaeIntakeDisable()));
   }
 
   public static Rotation2d getGyroAngleAsR2D() {
@@ -70,5 +85,4 @@ public class RobotContainer {
     return autoChooser.getSelected();
   }
 
-  
 }

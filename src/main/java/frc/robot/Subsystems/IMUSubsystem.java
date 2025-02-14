@@ -42,4 +42,8 @@ public class IMUSubsystem extends SubsystemBase{
         return roll;
     }
 
+    public boolean isIMUFound(){
+        return imu.isConnected();
+    }
+
 }
