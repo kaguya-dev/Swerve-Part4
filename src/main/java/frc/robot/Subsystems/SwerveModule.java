@@ -1,7 +1,6 @@
 package frc.robot.Subsystems;
 
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.pathplanner.lib.config.RobotConfig;
+import com.ctre.phoenix6.hardware.CANcoder; 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -14,9 +13,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.RobotContainer;
-import frc.robot.Constants.SwerveModulesContants;
+import frc.robot.Utils.Constants;
+import frc.robot.Utils.Constants.SwerveModulesContants;
 
 @Logged(name = "SwerveModule")
 public class SwerveModule extends SubsystemBase{
