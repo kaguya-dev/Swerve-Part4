@@ -11,7 +11,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Utils.Constants;
 
 @Logged (name = "IntakeSubsystem")
 public class IntakeSubsystem extends SubsystemBase{
@@ -43,13 +43,14 @@ public class IntakeSubsystem extends SubsystemBase{
         intakePID = new PIDController(Constants.intakeKP, Constants.intakeKI, Constants.intakeKD);
         intakePID.enableContinuousInput(0, 0.02);
 
-        //angulationEncoder = angulationMotor.getAlternateEncoder();
-        angulationConfig.alternateEncoder.countsPerRevolution(360);
+        angulationEncoder = angulationMotor.getEncoder();
+        //angulationConfig.alternateEncoder.countsPerRevolution(360);
         angulationConfig.idleMode(IdleMode.kBrake);
         angulationMotor.configure(angulationConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         algaeLeftConfig.inverted(false);
         algaeLeftConfig.idleMode(IdleMode.kBrake);
+
         algaeRightConfig.inverted(true);
         algaeRightConfig.idleMode(IdleMode.kBrake);
 

@@ -4,7 +4,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Utils.Constants;
 
 public class IMUSubsystem extends SubsystemBase{
     private Pigeon2 imu;

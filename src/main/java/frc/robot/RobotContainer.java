@@ -23,6 +23,8 @@ import frc.robot.Commands.Drive;
 import frc.robot.Subsystems.DriveSubsystem;
 import frc.robot.Subsystems.IMUSubsystem;
 import frc.robot.Subsystems.IntakeSubsystem;
+import frc.robot.Subsystems.LimelightSubsystem;
+import frc.robot.Utils.Constants;
 
 @Logged(name = "Container")
 public class RobotContainer {
@@ -32,6 +34,7 @@ public class RobotContainer {
   public static DriveSubsystem driver;
   public static IMUSubsystem imu;
   public static IntakeSubsystem scoreIntake;
+  public static LimelightSubsystem limelight;
   public GenericHID j1, j2;
   public PS5Controller ps1, ps2;
 
@@ -39,6 +42,7 @@ public class RobotContainer {
     imu = new IMUSubsystem();
     driver = new DriveSubsystem();
     scoreIntake = new IntakeSubsystem();
+    limelight = new LimelightSubsystem();
     j1 = new GenericHID(Constants.DRIVEJOY_PORT);
     j2 = new GenericHID(Constants.SCOREJOY_PORT);
     configureBindings();
