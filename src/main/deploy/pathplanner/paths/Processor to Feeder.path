@@ -66,7 +66,7 @@
     "rotation": -126.15818543980834
   },
   "reversed": false,
-  "folder": null,
+  "folder": "ProcessorExit",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -90.97102193107929
