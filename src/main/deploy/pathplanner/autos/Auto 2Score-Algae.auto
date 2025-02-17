@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Base to ReedEF"
+            "pathName": "Base to ReefHG"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "ReefEF to Feeder"
+            "pathName": "Reef to Processor 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Processor to Feeder"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Feeder to ReefCD"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "ReefCD to Feeder"
           }
         }
       ]
