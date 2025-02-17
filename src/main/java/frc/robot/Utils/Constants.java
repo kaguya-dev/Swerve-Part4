@@ -33,7 +33,7 @@ public class Constants {
                 MOTOR_LEFT_ANGULAR_BACK,
                 MOTOR_LEFT_DRIVER_BACK,
                 CANCODER_BACK_LEFT,
-                0),
+                4),
 
         MOD3(// Back Right (Inverted)
                 MOTOR_RIGHT_ANGULAR_BACK,

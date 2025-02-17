@@ -1,4 +1,4 @@
-package frc.robot.Commands;
+package frc.robot.Commands.Auto;
 
 import java.lang.invoke.ConstantBootstraps;
 import java.util.function.DoubleSupplier;
