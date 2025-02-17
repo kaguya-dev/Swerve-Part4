@@ -1,4 +1,4 @@
-package frc.robot.Subsystems;
+package frc.robot.Subsystems.SwerveSensors;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 

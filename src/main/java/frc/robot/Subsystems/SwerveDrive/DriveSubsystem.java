@@ -1,11 +1,10 @@
-package frc.robot.Subsystems;
+package frc.robot.Subsystems.SwerveDrive;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
-import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -20,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Utils.Constants;
 
-@Logged(name = "DriveSubsystem")
 public class DriveSubsystem extends SubsystemBase {
     public SwerveModule[] swerveMods;
 

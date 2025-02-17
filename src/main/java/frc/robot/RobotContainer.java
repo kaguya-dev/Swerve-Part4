@@ -5,12 +5,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
-import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS5Controller;
@@ -20,13 +15,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.Drive;
-import frc.robot.Subsystems.DriveSubsystem;
-import frc.robot.Subsystems.IMUSubsystem;
-import frc.robot.Subsystems.IntakeSubsystem;
-import frc.robot.Subsystems.LimelightSubsystem;
+import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
+import frc.robot.Subsystems.SwerveSensors.LimelightSubsystem;
+import frc.robot.Subsystems.SwerveSensors.IMUSubsystem;
+import frc.robot.Subsystems.ScoreSubsystem.IntakeSubsystem;
 import frc.robot.Utils.Constants;
 
-@Logged(name = "Container")
 public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 

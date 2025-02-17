@@ -34,7 +34,7 @@ public class AutoAngleAlignAT extends Command{
     }
 
     @Override
-    public boolean isFinished() {0
+    public boolean isFinished() {
         return false;
     }
 
