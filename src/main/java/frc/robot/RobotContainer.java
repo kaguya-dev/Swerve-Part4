@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
-import frc.robot.Subsystems.SwerveSensors.LimelightSubsystem;
-import frc.robot.Subsystems.SwerveSensors.IMUSubsystem;
 import frc.robot.Commands.TeleopSwerve.Drive;
 import frc.robot.Subsystems.ScoreSubsystem.IntakeSubsystem;
+import frc.robot.Subsystems.Sensors.IMUSubsystem;
+import frc.robot.Subsystems.Sensors.LimelightSubsystem;
 import frc.robot.Utils.Constants;
 
 public class RobotContainer {

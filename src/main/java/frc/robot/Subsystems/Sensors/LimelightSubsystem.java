@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.SwerveSensors;
+package frc.robot.Subsystems.Sensors;
 
 
 import edu.wpi.first.networktables.NetworkTable;
