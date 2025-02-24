@@ -1,3 +1,4 @@
+// Necessary imports for the code to function
 package frc.robot.Subsystems.ScoreSubsystem;
 
 import com.revrobotics.RelativeEncoder;
@@ -5,7 +6,6 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -13,67 +13,121 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Utils.Constants;
 
-public class ElevatorSubsystem extends SubsystemBase{
+/**
+ * Subsystem responsible for controlling the elevator mechanism.
+ * This subsystem uses two SparkMax motors, a PID controller, and a calibration switch
+ * to manage the elevator's position and ensure it operates within safe limits.
+ */
+public class ElevatorSubsystem extends SubsystemBase {
 
+    // Motors for the elevator
     private SparkMax leftMotor;
     private SparkMax rightMotor;
 
-    private RelativeEncoder encoder;
+    // Encoder to track the elevator's position
+    private RelativeEncoder elevatorEncoder;
+
+    // Calibration switch to reset the elevator's position
     private DigitalInput calibrationSwitch;
-    private boolean maxHeight;
 
-    private SparkMaxConfig leftConfig;
-    private SparkMaxConfig rightConfig;
-    
-    private PIDController pidController;
+    // Flag to indicate if the elevator has reached its maximum height
+    private boolean isAtMaxHeight;
 
-    public ElevatorSubsystem(){
-        pidController = new PIDController(Constants.elevatorKP, Constants.elevatorKI, Constants.elevatorKD);
+    // Configuration objects for the SparkMax motors
+    private SparkMaxConfig leftMotorConfig;
+    private SparkMaxConfig rightMotorConfig;
 
-        leftMotor = new SparkMax(Constants.leftElevatorMotor, MotorType.kBrushless);
-        rightMotor = new SparkMax(Constants.rightElevatorMotor, MotorType.kBrushless);
+    // PID controller for precise elevator positioning
+    private PIDController elevatorPIDController;
 
-        leftConfig = new SparkMaxConfig();
-        rightConfig = new SparkMaxConfig();
+    /**
+     * Constructor for the ElevatorSubsystem.
+     * Initializes motors, encoders, PID controller, and calibration switch.
+     */
+    public ElevatorSubsystem() {
+        // Initialize the PID controller with constants for elevator control
+        elevatorPIDController = new PIDController(Constants.kElevatorKP, Constants.kElevatorKI, Constants.kElevatorKD);
 
-        leftConfig.inverted(false);
-        leftConfig.idleMode(IdleMode.kBrake);
-        rightConfig.inverted(true);
-        rightConfig.idleMode(IdleMode.kBrake);
+        // Initialize the left and right motors
+        leftMotor = new SparkMax(Constants.kLeftElevatorMotorID, MotorType.kBrushless);
+        rightMotor = new SparkMax(Constants.kRightElevatorMotorID, MotorType.kBrushless);
 
-        encoder = leftMotor.getEncoder();
-        calibrationSwitch = new DigitalInput(Constants.microSwitchPWMPort);
-        maxHeight = false;
-        
-        Shuffleboard.getTab("ScoreSystem").addBoolean("CalibrationSwitch", (() -> calibrationSwitch.get()));
-        Shuffleboard.getTab("ScoreSystem").addDouble("ElevatorPosition", (() -> encoder.getPosition()));
+        // Initialize motor configurations
+        leftMotorConfig = new SparkMaxConfig();
+        rightMotorConfig = new SparkMaxConfig();
+
+        // Configure the left motor
+        leftMotorConfig.inverted(false); 
+        leftMotorConfig.idleMode(IdleMode.kBrake); 
+
+        // Configure the right motor
+        rightMotorConfig.inverted(true); 
+        rightMotorConfig.idleMode(IdleMode.kBrake); 
+
+        // Get the encoder from the left motor
+        elevatorEncoder = leftMotor.getEncoder();
+
+        // Initialize the calibration switch
+        calibrationSwitch = new DigitalInput(Constants.kMicroSwitchPWMPort);
+
+        // Initialize the max height flag
+        isAtMaxHeight = false;
+
+        Shuffleboard.getTab("ScoreSystem").addBoolean("CalibrationSwitch", () -> calibrationSwitch.get());
+        Shuffleboard.getTab("ScoreSystem").addDouble("ElevatorPosition", () -> elevatorEncoder.getPosition());
     }
 
-    private void powerElevator(double power){
-        //Speed clamper a definir
-        power = MathUtil.clamp(power, -Constants.elevatorSpeedClamper, Constants.elevatorSpeedClamper);
+    /**
+     * Sets the power to the elevator motors, clamping the value to ensure safe operation.
+     *
+     * @param power The power to apply to the motors, clamped between -kElevatorSpeedClamper and kElevatorSpeedClamper.
+     */
+    private void powerElevator(double power) {
+        // Clamp the power to ensure it stays within safe limits
+        power = MathUtil.clamp(power, -Constants.kElevatorSpeedClamper, Constants.kElevatorSpeedClamper);
+
+        // Apply the power to both motors
         leftMotor.set(power);
         rightMotor.set(power);
     }
 
-    public void setElevator(double position){
-        double calculate = pidController.calculate(encoder.getPosition(), position);
-        if(position < Constants.MAXHEIGHT){
-            maxHeight = false;
-            powerElevator(calculate);
-        }else{
-            maxHeight = true;
+    /**
+     * Moves the elevator to a specific position using the PID controller.
+     *
+     * @param position The target position for the elevator.
+     */
+    public void setElevator(double position) {
+        // Calculate the output using the PID controller
+        double output = elevatorPIDController.calculate(elevatorEncoder.getPosition(), position);
+
+        // Check if the target position is within the maximum height limit
+        if (position < Constants.kMaxHeight) {
+            isAtMaxHeight = false; 
+            powerElevator(output); 
+        } else {
+            isAtMaxHeight = true; 
         }
     }
 
-    private void lowCalibratePID(){
-        encoder.setPosition(0);
+    /**
+     * Resets the elevator's position to zero using the calibration switch.
+     */
+    private void lowCalibratePID() {
+        elevatorEncoder.setPosition(0);
     }
 
+    /**
+     * Periodic method called every scheduler cycle.
+     * Checks the calibration switch and updates the max height flag.
+     */
     @Override
-    public void periodic(){
-        if(calibrationSwitch.get())
-            lowCalibratePID();
-        Constants.elevatorMaxHeight.set(maxHeight);
+    public void periodic() {
+        // Check if the calibration switch is triggered
+        if (calibrationSwitch.get()) {
+            lowCalibratePID(); // Reset the elevator position
+        }
+
+        // Update the max height flag in Constants
+        Constants.kElevatorMaxHeight.set(isAtMaxHeight);
     }
 }

@@ -21,66 +21,100 @@ import frc.robot.Subsystems.Sensors.IMUSubsystem;
 import frc.robot.Subsystems.Sensors.LimelightSubsystem;
 import frc.robot.Utils.Constants;
 
+/**
+ * This class is where the bulk of the robot should be declared.
+ */
 public class RobotContainer {
-  private final SendableChooser<Command> autoChooser;
 
-  public ChassisSpeeds swerveChassis;
-  public static DriveSubsystem driver;
-  public static IMUSubsystem imu;
-  public static IntakeSubsystem scoreIntake;
-  public static LimelightSubsystem limelight;
-  public GenericHID j1, j2;
-  public PS5Controller ps1, ps2;
+    // Auto chooser for selecting autonomous routines
+    private final SendableChooser<Command> autoChooser;
 
-  public RobotContainer() {
-    imu = new IMUSubsystem();
-    driver = new DriveSubsystem();
-    scoreIntake = new IntakeSubsystem();
-    limelight = new LimelightSubsystem();
-    j1 = new GenericHID(Constants.DRIVEJOY_PORT);
-    j2 = new GenericHID(Constants.SCOREJOY_PORT);
-    configureBindings();
+    // Chassis speeds for swerve drive
+    public ChassisSpeeds swerveChassis;
 
-    driver.setDefaultCommand(
-        new Drive(
-            () -> j1.getRawAxis(1),
-            () -> -j1.getRawAxis(0),
-            () -> j1.getRawAxis(4) * 0.6,
-            () -> imu.isIMUFound()));
+    // Subsystems
+    public static DriveSubsystem driver; 
+    public static IMUSubsystem imu; 
+    public static IntakeSubsystem scoreIntake; 
+    public static LimelightSubsystem limelight; 
 
-    // Build an auto chooser. This will use Commands.none() as the default option.
-    autoChooser = AutoBuilder.buildAutoChooser();
+    // Input devices
+    public GenericHID j1, j2; 
+    public PS5Controller ps1, ps2; 
 
-    // Another option that allows you to specify the default auto by its name
-    // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
+    /**
+     * Constructor for the RobotContainer.
+     * Initializes subsystems, input devices, and configures default commands and bindings.
+     */
+    public RobotContainer() {
+        // Initialize subsystems
+        imu = new IMUSubsystem();
+        driver = new DriveSubsystem();
+        scoreIntake = new IntakeSubsystem();
+        limelight = new LimelightSubsystem();
 
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+        // Initialize input devices
+        j1 = new GenericHID(Constants.kDriveControllerID);
+        j2 = new GenericHID(Constants.kScoreControllerID);
 
-  }
+        // Configure button bindings
+        configureBindings();
 
-  private void configureBindings() {
+        // Set the default command for the drive subsystem
+        driver.setDefaultCommand(
+                new Drive(
+                        () -> j1.getRawAxis(1), // X-axis input
+                        () -> -j1.getRawAxis(0), // Y-axis input
+                        () -> j1.getRawAxis(4) * 0.6, // Rotation input 
+                        () -> imu.isIMUFound() // Field-centric mode 
+                )
+        );
 
-    new JoystickButton(j1, 2).whileTrue(Commands.run(() -> imu.resetYaw()));
+        // Build an auto chooser for selecting autonomous routines
+        autoChooser = AutoBuilder.buildAutoChooser();
 
-    new JoystickButton(j2, 3)
-        .onTrue(Commands.run(() -> scoreIntake.coralIntake(Constants.coralIntakePower)))
-        .onFalse(Commands.run(() -> scoreIntake.coralDisable()));
+        SmartDashboard.putData("Auto Chooser", autoChooser);
+    }
 
-    new JoystickButton(j2, 2)
-        .onTrue(Commands.run(() -> scoreIntake.algaeIntake(Constants.algaeIntakePower, true)))
-        .onFalse(Commands.run(() -> scoreIntake.algaeIntakeDisable()));
+    /**
+     * Configures button bindings for the robot.
+     * Maps buttons to specific commands.
+     */
+    private void configureBindings() {
+        // Reset the IMU yaw when button 2 on joystick 1 is pressed
+        new JoystickButton(j1, 2).whileTrue(Commands.run(() -> imu.resetYaw()));
 
-    new JoystickButton(j2, 1)
-        .onTrue(Commands.run(() -> scoreIntake.algaeIntake(Constants.algaeIntakePower, false)))
-        .onFalse(Commands.run(() -> scoreIntake.algaeIntakeDisable()));
-  }
+        // Control coral intake with button 3 on joystick 2
+        new JoystickButton(j2, 3)
+                .onTrue(Commands.run(() -> scoreIntake.coralIntake(Constants.coralIntakePower))) // Enable coral intake
+                .onFalse(Commands.run(() -> scoreIntake.coralDisable())); // Disable coral intake
 
-  public static Rotation2d getGyroAngleAsR2D() {
-    return new Rotation2d(imu.getYaw());
-  }
+        // Control algae intake (forward) with button 2 on joystick 2
+        new JoystickButton(j2, 2)
+                .onTrue(Commands.run(() -> scoreIntake.algaeIntake(Constants.algaeIntakePower, true))) // Enable algae intake (forward)
+                .onFalse(Commands.run(() -> scoreIntake.algaeIntakeDisable())); // Disable algae intake
 
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
-  }
+        // Control algae intake (reverse) with button 1 on joystick 2
+        new JoystickButton(j2, 1)
+                .onTrue(Commands.run(() -> scoreIntake.algaeIntake(Constants.algaeIntakePower, false))) // Enable algae intake (reverse)
+                .onFalse(Commands.run(() -> scoreIntake.algaeIntakeDisable())); // Disable algae intake
+    }
 
+    /**
+     * Returns the current gyro angle as a Rotation2d object.
+     *
+     * @return The current gyro angle.
+     */
+    public static Rotation2d getGyroAngleAsR2D() {
+        return new Rotation2d(imu.getYaw());
+    }
+
+    /**
+     * Returns the selected autonomous command from the auto chooser.
+     *
+     * @return The selected autonomous command.
+     */
+    public Command getAutonomousCommand() {
+        return autoChooser.getSelected();
+    }
 }

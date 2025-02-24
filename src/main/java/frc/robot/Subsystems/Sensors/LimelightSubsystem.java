@@ -1,5 +1,5 @@
+// Necessary imports for the code to function
 package frc.robot.Subsystems.Sensors;
-
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -7,44 +7,101 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Utils.LimelightHelpers;
 
-public class LimelightSubsystem extends SubsystemBase{
-    NetworkTable lime = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tx = lime.getEntry("tx");
-    NetworkTableEntry ty = lime.getEntry("ty");
-    NetworkTableEntry ta = lime.getEntry("ta");
+/**
+ * Subsystem responsible for interfacing with the Limelight vision system.
+ * This subsystem provides methods to retrieve and manage data from the Limelight,
+ * such as target position (X, Y) and area, as well as setting the target ID.
+ */
+public class LimelightSubsystem extends SubsystemBase {
 
-    private double x = tx.getDouble(0.0);
-    private double y = ty.getDouble(0.0);
-    private double a = ta.getDouble(0.0);
+    // NetworkTable instance for accessing Limelight data
+    private NetworkTable lime;
 
-    public LimelightSubsystem(){}
+    // NetworkTable entries for Limelight values
+    private NetworkTableEntry tX;
+    private NetworkTableEntry tY;
+    private NetworkTableEntry tA;
 
-   // @Override
-    public void periodic(){
-       x  = tx.getDouble(0.0);
-       y =  ty.getDouble(0.0);
-       a = ta.getDouble(0.0);
+    // Variables to store the latest Limelight values
+    private double tXValue;
+    private double tYValue;
+    private double tAreaValue;
+
+    /**
+     * Constructor for the LimelightSubsystem.
+     * Initializes the NetworkTable and its entries for accessing Limelight data.
+     */
+    public LimelightSubsystem() {
+        // Get the Limelight NetworkTable
+        lime = NetworkTableInstance.getDefault().getTable("limelight");
+
+        // Initialize NetworkTable entries for target X, Y, and area
+        tX = lime.getEntry("tx");
+        tX = lime.getEntry("ty");
+        tA = lime.getEntry("ta");
+
+        // Initialize variables to store the latest Limelight values
+        tXValue = tX.getDouble(0.0);
+        tYValue = tX.getDouble(0.0);
+        tAreaValue = tY.getDouble(0.0);
     }
 
-    public void setTargetID(int ID){
+    /**
+     * Periodic method called every scheduler cycle.
+     * Updates the Limelight values (X, Y, and area) from the NetworkTable.
+     */
+    @Override
+    public void periodic() {
+        tXValue = tX.getDouble(0.0);
+        tYValue = tX.getDouble(0.0);
+        tAreaValue = tY.getDouble(0.0);
+    }
+
+    /**
+     * Sets the priority target ID for the Limelight.
+     *
+     * @param ID The ID of the target to prioritize.
+     */
+    public void setTargetID(int ID) {
         LimelightHelpers.setPriorityTagID("limelight", ID);
     }
 
-    public boolean getTargetLime(){
-        if(a > 0) return true;
+    /**
+     * Checks if the Limelight has detected a valid target.
+     *
+     * @return True if a target is detected (area > 0), false otherwise.
+     */
+    public boolean getTargetLime() {
+        if (tAreaValue > 0) {
+            return true;
+        }
         return false;
     }
 
-    public double getLimeXValue(){
-        return x;
+    /**
+     * Returns the latest X value from the Limelight.
+     *
+     * @return The X value (horizontal offset) of the target.
+     */
+    public double getLimeXValue() {
+        return tXValue;
     }
 
-    public double getLimeYValue(){
-        return y;
+    /**
+     * Returns the latest Y value from the Limelight.
+     *
+     * @return The Y value (vertical offset) of the target.
+     */
+    public double getLimeYValue() {
+        return tYValue;
     }
 
-    public double getLimeAreaValue(){
-        return a;
+    /**
+     * Returns the latest area value from the Limelight.
+     *
+     * @return The area of the target.
+     */
+    public double getLimeAreaValue() {
+        return tAreaValue;
     }
-        
 }

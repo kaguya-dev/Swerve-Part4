@@ -1,10 +1,10 @@
+// Necessary imports for the code to function
 package frc.robot.Subsystems.SwerveDrive;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,61 +19,65 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Utils.Constants;
 
+/**
+ * Subsystem responsible for controlling the swerve drive.
+ * This subsystem manages the swerve modules, odometry, and path following using PathPlanner.
+ */
 public class DriveSubsystem extends SubsystemBase {
-    public SwerveModule[] swerveMods;
 
+    // Array of swerve modules
+    public SwerveModule[] swerveModules;
+
+    // Odometry and pose estimator for tracking robot position
     public SwerveDriveOdometry swerveOdometry;
-    public SwerveDrivePoseEstimator swervePoser;
-    public ChassisSpeeds swerveChassis;
+    public SwerveDrivePoseEstimator swervePoseEstimator;
 
+    // Chassis speeds for robot movement
+    public ChassisSpeeds swerveChassisSpeeds;
+
+    /**
+     * Constructor for the DriveSubsystem.
+     * Initializes swerve modules, odometry, pose estimator, and configures AutoBuilder for path following.
+     */
     public DriveSubsystem() {
-        swerveMods = new SwerveModule[] {
-                new SwerveModule(Constants.SwerveModulesContants.MOD0),
-                new SwerveModule(Constants.SwerveModulesContants.MOD1),
-                new SwerveModule(Constants.SwerveModulesContants.MOD2),
-                new SwerveModule(Constants.SwerveModulesContants.MOD3) };
+        // Initialize swerve modules with constants from Constants class
+        swerveModules = new SwerveModule[] {
+                new SwerveModule(Constants.SwerveModulesContants.kMOD0),
+                new SwerveModule(Constants.SwerveModulesContants.kMOD1),
+                new SwerveModule(Constants.SwerveModulesContants.kMOD2),
+                new SwerveModule(Constants.SwerveModulesContants.kMOD3)
+        };
 
-        swerveMods[1].isRight(true);
-        swerveMods[3].isRight(true);
+        // Set the right-side modules as right-facing
+        swerveModules[1].isRight(true);
+        swerveModules[3].isRight(true);
 
-        swerveChassis = new ChassisSpeeds();
-        swerveOdometry = new SwerveDriveOdometry(Constants.kDriveKinematics, RobotContainer.getGyroAngleAsR2D(),
-                getPositions());
+        // Initialize chassis speeds
+        swerveChassisSpeeds = new ChassisSpeeds();
 
-        swervePoser = new SwerveDrivePoseEstimator(Constants.kDriveKinematics,
-                RobotContainer.getGyroAngleAsR2D(), getPositions(), new Pose2d());
+        // Initialize odometry with the current gyro angle and module positions
+        swerveOdometry = new SwerveDriveOdometry(Constants.kDriveKinematics, RobotContainer.getGyroAngleAsR2D(), getModulePositions());
 
-        // All other subsystem initialization
-        // ...
+        // Initialize pose estimator with kinematics, gyro angle, module positions, and initial pose
+        swervePoseEstimator = new SwerveDrivePoseEstimator(Constants.kDriveKinematics, RobotContainer.getGyroAngleAsR2D(), getModulePositions(), new Pose2d());
 
-        // Load the RobotConfig from the GUI settings. You should probably
-        // store this in your Constants file
+        // Load the RobotConfig from the GUI settings (typically stored in Constants)
         RobotConfig config;
         try {
             config = RobotConfig.fromGUISettings();
 
-            // Configure AutoBuilder last
+            // Configure AutoBuilder for path following
             AutoBuilder.configure(
-                    this::getPose, // Robot pose supplier
-                    this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-                    this::getCurrentSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                    (speeds, feedforwards) -> drive(swerveChassis.vxMetersPerSecond, swerveChassis.vyMetersPerSecond,
-                            swerveChassis.omegaRadiansPerSecond, false), // Method that will drive the robot given ROBOT
-                    // RELATIVE ChassisSpeeds. Also optionally outputs
-                    // individual module feedforwards
-                    new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller
-                                                    // for
-                                                    // holonomic drive trains
+                    this::getPose, 
+                    this::resetPose, 
+                    this::getCurrentSpeeds,
+                    (speeds, feedforwards) -> drive(swerveChassisSpeeds.vxMetersPerSecond, swerveChassisSpeeds.vyMetersPerSecond, swerveChassisSpeeds.omegaRadiansPerSecond, false), // Method to drive the robot using robot-relative ChassisSpeeds
+                    new PPHolonomicDriveController( // Built-in path following controller for holonomic drive trains
                             new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
                             new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
                     ),
-                    config, // The robot configuration
-                    () -> {
-                        // Boolean supplier that controls when the path will be mirrored for the red
-                        // alliance
-                        // This will flip the path being followed to the red side of the field.
-                        // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
+                    config, // Robot configuration
+                    () -> { // Boolean supplier to mirror the path for the red alliance
                         var alliance = DriverStation.getAlliance();
                         if (alliance.isPresent()) {
                             return alliance.get() == DriverStation.Alliance.Red;
@@ -88,65 +92,90 @@ public class DriveSubsystem extends SubsystemBase {
         }
     }
 
-    public void drive(double xVelocity_m_per_s, double yVelocity_m_per_s, double omega_rad_per_s,
-            boolean fieldcentric) {
+    /**
+     * Drives the robot using the specified velocities and field-centric mode.
+     *
+     * @param xVelocity_m_per_s The velocity in the X direction (meters per second).
+     * @param yVelocity_m_per_s The velocity in the Y direction (meters per second).
+     * @param rotationSpeed_rad_per_s The rotational velocity (radians per second).
+     * @param fieldCentric Whether to use field-centric driving.
+     */
+    public void drive(double xVelocity_m_per_s, double yVelocity_m_per_s, double rotationSpeed_rad_per_s, boolean fieldCentric) {
         SwerveModuleState[] swerveModuleStates;
 
-        swerveChassis.vxMetersPerSecond = xVelocity_m_per_s;
-        swerveChassis.vyMetersPerSecond = yVelocity_m_per_s;
-        swerveChassis.omegaRadiansPerSecond = omega_rad_per_s;
+        // Update chassis speeds
+        swerveChassisSpeeds.vxMetersPerSecond = xVelocity_m_per_s;
+        swerveChassisSpeeds.vyMetersPerSecond = yVelocity_m_per_s;
+        swerveChassisSpeeds.omegaRadiansPerSecond = rotationSpeed_rad_per_s;
 
-        if (Math.abs(xVelocity_m_per_s) < Constants.JOY_DEADBAND)
-            xVelocity_m_per_s = 0;
+        // Apply deadband to velocities
+        if (Math.abs(xVelocity_m_per_s) < Constants.kControllerDeadband) xVelocity_m_per_s = 0;
+        if (Math.abs(yVelocity_m_per_s) < Constants.kControllerDeadband) yVelocity_m_per_s = 0;
+        if (Math.abs(rotationSpeed_rad_per_s) < Constants.kControllerDeadband) rotationSpeed_rad_per_s = 0;
 
-        if (Math.abs(yVelocity_m_per_s) < Constants.JOY_DEADBAND)
-            yVelocity_m_per_s = 0;
-
-        if (Math.abs(omega_rad_per_s) < Constants.JOY_DEADBAND)
-            omega_rad_per_s = 0;
-
-        if (fieldcentric) { // field-centric swerve
+        // Calculate swerve module states based on field-centric or robot-centric mode
+        if (fieldCentric) {
             swerveModuleStates = Constants.kDriveKinematics.toSwerveModuleStates(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
                             xVelocity_m_per_s,
                             yVelocity_m_per_s,
-                            omega_rad_per_s,
-                            Rotation2d.fromDegrees(RobotContainer.getGyroAngleAsR2D().getDegrees())));
-        } else { // robot-centric swerve; does not use IMU
-            swerveModuleStates = Constants.kDriveKinematics.toSwerveModuleStates(swerveChassis);
+                            rotationSpeed_rad_per_s,
+                            Rotation2d.fromDegrees(RobotContainer.getGyroAngleAsR2D().getDegrees())
+                    )
+            );
+        } else {
+            swerveModuleStates = Constants.kDriveKinematics.toSwerveModuleStates(swerveChassisSpeeds);
         }
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.MAX_SPEED);
+        // Desaturate wheel speeds to ensure they are within the maximum speed
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.kMaxSpeed);
 
-        for (SwerveModule mod : swerveMods) {
-            SmartDashboard.putNumber("Actual State Angle mod n"
-                    .concat(String.valueOf(mod.getModuleNumber())), mod.getState().angle.getDegrees());
-            SmartDashboard.putNumber("Actual State Speed mod n"
-                    .concat(String.valueOf(mod.getModuleNumber())), mod.getState().speedMetersPerSecond);
-
-            mod.setDesiredState(swerveModuleStates[mod.getModuleNumber()]);
+        // Set desired states for each swerve module
+        for (SwerveModule module : swerveModules) {
+            SmartDashboard.putNumber("Actual State Angle mod " + module.getModuleNumber(), module.getState().angle.getDegrees());
+            SmartDashboard.putNumber("Actual State Speed mod " + module.getModuleNumber(), module.getState().speedMetersPerSecond);
+            module.setDesiredState(swerveModuleStates[module.getModuleNumber()]);
         }
     }
 
-    private SwerveModulePosition[] getPositions() {
+    /**
+     * Returns the positions of all swerve modules.
+     *
+     * @return An array of SwerveModulePosition objects representing the positions of the modules.
+     */
+    private SwerveModulePosition[] getModulePositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
-        for (int i = 0; i < swerveMods.length; i++) {
-            positions[i] = swerveMods[i].getPosition();
+        for (int i = 0; i < swerveModules.length; i++) {
+            positions[i] = swerveModules[i].getPosition();
         }
         return positions;
     }
 
+    /**
+     * Returns the current pose of the robot.
+     *
+     * @return The current pose as a Pose2d object.
+     */
     public Pose2d getPose() {
         return swerveOdometry.getPoseMeters();
     }
 
+    /**
+     * Resets the robot's pose to the specified position.
+     *
+     * @param pose The new pose to reset to.
+     */
     public void resetPose(Pose2d pose) {
         System.out.println(pose);
-        swerveOdometry.resetPosition(RobotContainer.getGyroAngleAsR2D(), getPositions(), pose);
+        swerveOdometry.resetPosition(RobotContainer.getGyroAngleAsR2D(), getModulePositions(), pose);
     }
 
+    /**
+     * Returns the current chassis speeds of the robot.
+     *
+     * @return The current chassis speeds as a ChassisSpeeds object.
+     */
     public ChassisSpeeds getCurrentSpeeds() {
-        return swerveChassis;
+        return swerveChassisSpeeds;
     }
-
 }
