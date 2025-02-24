@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
 import frc.robot.Commands.TeleopSwerve.Drive;
 import frc.robot.Subsystems.ScoreSubsystem.IntakeSubsystem;
+import frc.robot.Subsystems.Sensors.FishEye;
 import frc.robot.Subsystems.Sensors.IMUSubsystem;
 import frc.robot.Subsystems.Sensors.LimelightSubsystem;
 import frc.robot.Utils.Constants;
@@ -26,32 +27,42 @@ import frc.robot.Utils.Constants;
  */
 public class RobotContainer {
 
-    // Auto chooser for selecting autonomous routines
-    private final SendableChooser<Command> autoChooser;
-
     // Chassis speeds for swerve drive
     public ChassisSpeeds swerveChassis;
+
+    SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
     // Subsystems
     public static DriveSubsystem driver; 
     public static IMUSubsystem imu; 
     public static IntakeSubsystem scoreIntake; 
     public static LimelightSubsystem limelight; 
+    public static FishEye fisheye;
 
     // Input devices
     public GenericHID j1, j2; 
     public PS5Controller ps1, ps2; 
 
-    /**
-     * Constructor for the RobotContainer.
-     * Initializes subsystems, input devices, and configures default commands and bindings.
-     */
     public RobotContainer() {
         // Initialize subsystems
         imu = new IMUSubsystem();
         driver = new DriveSubsystem();
         scoreIntake = new IntakeSubsystem();
         limelight = new LimelightSubsystem();
+        fisheye = new FishEye();
+
+        // Initialize input devices
+        j1 = new GenericHID(Constants.kDriveControllerID);
+        j2 = new GenericHID(Constants.kScoreControllerID);
+
+        // Configure button bindings
+        configureBindings();
+
+    // Build an auto chooser. This will use Commands.none() as the default option.
+    //autoChooser = AutoBuilder.buildAutoChooser();
+
+    // Another option that allows you to specify the default auto by its name
+     autoChooser = AutoBuilder.buildAutoChooser("hahaha");
 
         // Initialize input devices
         j1 = new GenericHID(Constants.kDriveControllerID);
@@ -118,3 +129,4 @@ public class RobotContainer {
         return autoChooser.getSelected();
     }
 }
+
