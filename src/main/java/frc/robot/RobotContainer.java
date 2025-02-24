@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
 import frc.robot.Commands.TeleopSwerve.Drive;
 import frc.robot.Subsystems.ScoreSubsystem.IntakeSubsystem;
+import frc.robot.Subsystems.Sensors.FishEye;
 import frc.robot.Subsystems.Sensors.IMUSubsystem;
 import frc.robot.Subsystems.Sensors.LimelightSubsystem;
 import frc.robot.Utils.Constants;
@@ -29,6 +30,7 @@ public class RobotContainer {
   public static IMUSubsystem imu;
   public static IntakeSubsystem scoreIntake;
   public static LimelightSubsystem limelight;
+  public static FishEye fisheye;
   public GenericHID j1, j2;
   public PS5Controller ps1, ps2;
 
@@ -37,6 +39,7 @@ public class RobotContainer {
     driver = new DriveSubsystem();
     scoreIntake = new IntakeSubsystem();
     limelight = new LimelightSubsystem();
+    fisheye = new FishEye();
     j1 = new GenericHID(Constants.DRIVEJOY_PORT);
     j2 = new GenericHID(Constants.SCOREJOY_PORT);
     configureBindings();
@@ -49,10 +52,10 @@ public class RobotContainer {
             () -> imu.isIMUFound()));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
-    autoChooser = AutoBuilder.buildAutoChooser();
+    //autoChooser = AutoBuilder.buildAutoChooser();
 
     // Another option that allows you to specify the default auto by its name
-    // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
+     autoChooser = AutoBuilder.buildAutoChooser("hahaha");
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
