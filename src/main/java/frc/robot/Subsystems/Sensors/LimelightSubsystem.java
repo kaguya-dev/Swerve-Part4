@@ -37,13 +37,13 @@ public class LimelightSubsystem extends SubsystemBase {
 
         // Initialize NetworkTable entries for target X, Y, and area
         tX = lime.getEntry("tx");
-        tX = lime.getEntry("ty");
+        tY = lime.getEntry("ty");
         tA = lime.getEntry("ta");
 
         // Initialize variables to store the latest Limelight values
         tXValue = tX.getDouble(0.0);
-        tYValue = tX.getDouble(0.0);
-        tAreaValue = tY.getDouble(0.0);
+        tYValue = tY.getDouble(0.0);
+        tAreaValue = tA.getDouble(0.0);
     }
 
     /**

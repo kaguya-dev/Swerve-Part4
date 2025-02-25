@@ -18,17 +18,14 @@ public class AutoAngleAlignAT extends Command {
     // Supplier for the Limelight's X value (horizontal offset from the target)
     private final DoubleSupplier limeXSupplier;
 
-    // ID of the target to align with
-    private final int targetID;
 
     /**
      * Constructor for the AutoAngleAlignAT command.
      *
      * @param targetID The ID of the target to align with.
      */
+     
     public AutoAngleAlignAT(int targetID) {
-        // Add requirements for the Limelight and drive subsystems
-        addRequirements(RobotContainer.limelight, RobotContainer.driver);
 
         // Initialize the Limelight X value supplier
         limeXSupplier = () -> RobotContainer.limelight.getLimeXValue();
@@ -40,12 +37,6 @@ public class AutoAngleAlignAT extends Command {
             Constants.kAngleAlignKD
         );
 
-        // Set the target ID
-        this.targetID = targetID;
-
-        // Configure the PID controller
-        anglePIDController.setSetpoint(0);
-        anglePIDController.setTolerance(0.04); 
         anglePIDController.setIZone(0.1); 
     }
 
