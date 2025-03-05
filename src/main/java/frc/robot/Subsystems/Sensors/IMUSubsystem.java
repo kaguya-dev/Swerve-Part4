@@ -1,4 +1,4 @@
-package frc.robot.Subsystems;
+package frc.robot.Subsystems.Sensors;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 
@@ -40,6 +40,10 @@ public class IMUSubsystem extends SubsystemBase{
 
     public Angle getRoll() {
         return roll;
+    }
+
+    public boolean getIMUAvaliable(){
+        return imu.isConnected();
     }
 
 }

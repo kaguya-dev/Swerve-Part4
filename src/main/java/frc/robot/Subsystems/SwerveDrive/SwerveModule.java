@@ -1,12 +1,10 @@
-package frc.robot.Subsystems;
+package frc.robot.Subsystems.SwerveDrive;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
-import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,10 +13,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.SwerveModulesContants;
 
-@Logged(name = "SwerveModule")
 public class SwerveModule extends SubsystemBase{
     private SparkMax turnMotor;
     private SparkMax speedMotor;
