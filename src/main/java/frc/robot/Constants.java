@@ -19,25 +19,30 @@ public class Constants {
                 MOTOR_LEFT_ANGULAR_FRONT,
                 MOTOR_LEFT_DRIVER_FRONT,
                 CANCODER_FRONT_LEFT,
-                2),
+                CANCODER_FRONT_LEFT_OFFSET,
+                2, true),
 
         MOD1(// Front Right (Inverted)
                 MOTOR_RIGHT_ANGULAR_FRONT,
                 MOTOR_RIGHT_DRIVER_FRONT,
                 CANCODER_FRONT_RIGHT,
-                3),
+                CANCODER_FRONT_RIGHT_OFFSET,
+                3, false),
 
         MOD2(// Back Left (Inverted)
                 MOTOR_LEFT_ANGULAR_BACK,
                 MOTOR_LEFT_DRIVER_BACK,
                 CANCODER_BACK_LEFT,
-                0),
+                CANCODER_BACK_LEFT_OFFSET,
+                0, false),
 
         MOD3(// Back Right (Inverted)
                 MOTOR_RIGHT_ANGULAR_BACK,
                 MOTOR_RIGHT_DRIVER_BACK,
                 CANCODER_BACK_RIGHT,
-                1);
+                CANCODER_BACK_RIGHT_OFFSET,
+                1, false);
+            
 
         public int getModuleNumber() {
             return moduleNumber;
@@ -55,17 +60,29 @@ public class Constants {
             return cancoderID;
         }
 
+        public double getCancoderOffSet(){
+            return cancoderOffset;
+        }
+
+        public boolean isReversed() {
+            return isReversed;
+        }
+
         private int moduleNumber;
         private int driveMotorID;
         private int angleMotorID;
         private int cancoderID;
+        private double cancoderOffset;
+        private boolean isReversed;
+        
 
-        SwerveModulesContants(int motorAngular, int motorDriver, int cancoder, int moduleNumber) {
-            // TODO Auto-generated constructor stub
+        SwerveModulesContants(int motorAngular, int motorDriver, int cancoder, double cancoderOffset, int moduleNumber, boolean isReversed ) {
             this.angleMotorID = motorAngular;
             this.driveMotorID = motorDriver;
             this.cancoderID = cancoder;
+            this.cancoderOffset = cancoderOffset;
             this.moduleNumber = moduleNumber;
+            this.isReversed = isReversed;
         }
 
     }
@@ -84,21 +101,25 @@ public class Constants {
     public static final int MOTOR_LEFT_DRIVER_FRONT = 1;
     public static final int MOTOR_LEFT_ANGULAR_FRONT = 2;
     public static final int CANCODER_FRONT_LEFT = 21;
+    public static final double CANCODER_FRONT_LEFT_OFFSET = -0.20849609375;
 
     //BACK LEFT
     public static final int MOTOR_LEFT_DRIVER_BACK = 3;
     public static final int MOTOR_LEFT_ANGULAR_BACK = 4;
     public static final int CANCODER_BACK_LEFT = 22;
+    public static final double CANCODER_BACK_LEFT_OFFSET = -0.006103515625;
 
     //FRONTAL RIGHT
     public static final int MOTOR_RIGHT_DRIVER_BACK = 5;
     public static final int MOTOR_RIGHT_ANGULAR_BACK = 6;
     public static final int CANCODER_FRONT_RIGHT = 23;
+    public static final double CANCODER_FRONT_RIGHT_OFFSET = -0.76171875 ;
 
     //BACK RIGHT
     public static final int MOTOR_RIGHT_DRIVER_FRONT = 7;
     public static final int MOTOR_RIGHT_ANGULAR_FRONT = 8;
     public static final int CANCODER_BACK_RIGHT = 24;
+    public static final double CANCODER_BACK_RIGHT_OFFSET = -0.209228515625;
 
     // Joystick & Pigeon Configuration
     public static final int JOY_PORT = 0;
@@ -111,7 +132,6 @@ public class Constants {
 
     //DEADBANDS
     public static final double JOY_DEADBAND = 0.05;
-
 
     // PID Constants
     // PID Constants for Swerve
