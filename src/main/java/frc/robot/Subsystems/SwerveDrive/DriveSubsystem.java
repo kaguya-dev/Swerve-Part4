@@ -132,8 +132,10 @@ public class DriveSubsystem extends SubsystemBase {
 
         // Set desired states for each swerve module
         for (SwerveModule module : swerveModules) {
-            SmartDashboard.putNumber("Actual State Angle mod " + module.getModuleNumber(), module.getState().angle.getDegrees());
-            SmartDashboard.putNumber("Actual State Speed mod " + module.getModuleNumber(), module.getState().speedMetersPerSecond);
+            SmartDashboard.putNumber("Actual State Angle mod " + module.getModuleNumber(), 
+            module.getState().angle.getDegrees());
+            SmartDashboard.putNumber("Actual State Speed mod " + module.getModuleNumber(), 
+            module.getState().speedMetersPerSecond);
             module.setDesiredState(swerveModuleStates[module.getModuleNumber()]);
         }
     }

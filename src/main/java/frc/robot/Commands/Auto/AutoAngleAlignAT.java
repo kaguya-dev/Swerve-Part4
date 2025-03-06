@@ -13,10 +13,10 @@ import frc.robot.Utils.Constants;
  */
 public class AutoAngleAlignAT extends Command {
     // PID controller for angle alignment
-    private final PIDController anglePIDController;
+    //private final PIDController anglePIDController;
 
     // Supplier for the Limelight's X value (horizontal offset from the target)
-    private final DoubleSupplier limeXSupplier;
+    //private final DoubleSupplier limeXSupplier;
 
 
     /**
@@ -25,10 +25,10 @@ public class AutoAngleAlignAT extends Command {
      * @param targetID The ID of the target to align with.
      */
      
-    public AutoAngleAlignAT(int targetID) {
+    /*public AutoAngleAlignAT(int targetID) {
 
         // Initialize the Limelight X value supplier
-        limeXSupplier = () -> RobotContainer.limelight.getLimeXValue();
+        //limeXSupplier = () -> RobotContainer.limelight.getLimeXValue();
 
         // Initialize the PID controller with constants for angle alignment
         anglePIDController = new PIDController(
@@ -38,7 +38,7 @@ public class AutoAngleAlignAT extends Command {
         );
 
         anglePIDController.setIZone(0.1); 
-    }
+    }*/
 
     /**
      * Method called periodically while the command is active.
@@ -47,10 +47,10 @@ public class AutoAngleAlignAT extends Command {
     @Override
     public void execute() {
         // Calculate the rotation output using the PID controller and Limelight X value
-        double rotationOutput = anglePIDController.calculate(limeXSupplier.getAsDouble());
+        //double rotationOutput = anglePIDController.calculate(limeXSupplier.getAsDouble());
 
         // Drive the robot with no forward/strafe movement, only rotation
-        RobotContainer.driver.drive(0, 0, rotationOutput, false);
+        //RobotContainer.driver.drive(0, 0, rotationOutput, false);
     }
 
     /**

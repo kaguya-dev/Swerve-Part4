@@ -3,6 +3,8 @@ package frc.robot.Subsystems.ScoreSubsystem;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -72,6 +74,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         // Initialize the max height flag
         isAtMaxHeight = false;
+        
+        leftMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        rightMotor.configure(rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         Shuffleboard.getTab("ScoreSystem").addBoolean("CalibrationSwitch", () -> calibrationSwitch.get());
         Shuffleboard.getTab("ScoreSystem").addDouble("ElevatorPosition", () -> elevatorEncoder.getPosition());

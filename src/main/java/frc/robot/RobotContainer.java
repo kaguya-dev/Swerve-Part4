@@ -4,14 +4,10 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS5Controller;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
@@ -19,7 +15,6 @@ import frc.robot.Commands.TeleopSwerve.Drive;
 import frc.robot.Subsystems.ScoreSubsystem.IntakeSubsystem;
 import frc.robot.Subsystems.Sensors.FishEye;
 import frc.robot.Subsystems.Sensors.IMUSubsystem;
-import frc.robot.Subsystems.Sensors.LimelightSubsystem;
 import frc.robot.Utils.Constants;
 
 /**
@@ -30,13 +25,12 @@ public class RobotContainer {
     // Chassis speeds for swerve drive
     public ChassisSpeeds swerveChassis;
 
-    SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+   
 
     // Subsystems
     public static DriveSubsystem driver; 
     public static IMUSubsystem imu; 
     public static IntakeSubsystem scoreIntake; 
-    public static LimelightSubsystem limelight; 
     public static FishEye fisheye;
 
     // Input devices
@@ -48,7 +42,6 @@ public class RobotContainer {
         imu = new IMUSubsystem();
         driver = new DriveSubsystem();
         scoreIntake = new IntakeSubsystem();
-        limelight = new LimelightSubsystem();
         fisheye = new FishEye();
 
         // Initialize input devices
@@ -62,7 +55,7 @@ public class RobotContainer {
     //autoChooser = AutoBuilder.buildAutoChooser();
 
     // Another option that allows you to specify the default auto by its name
-     autoChooser = AutoBuilder.buildAutoChooser("hahaha");
+    
 
         // Initialize input devices
         j1 = new GenericHID(Constants.kDriveControllerID);
@@ -81,10 +74,7 @@ public class RobotContainer {
                 )
         );
 
-        // Build an auto chooser for selecting autonomous routines
-        autoChooser = AutoBuilder.buildAutoChooser();
-
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        
     }
 
     /**
@@ -125,8 +115,8 @@ public class RobotContainer {
      *
      * @return The selected autonomous command.
      */
-    public Command getAutonomousCommand() {
+    /*public Command getAutonomousCommand() {
         return autoChooser.getSelected();
-    }
+    }*/
 }
 
