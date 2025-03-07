@@ -36,11 +36,11 @@ public class IntakeSubsystem extends SubsystemBase{
     private SparkMaxConfig algaeRightConfig;
 
     public IntakeSubsystem(){
-        angulationCoralMotor = new SparkMax(Constants.intakeAngularCoralMotor, MotorType.kBrushless);
-        angulationAlgaeMotor = new SparkMax(Constants.intakeAngularAlgaeMotor, MotorType.kBrushed);
-        algaeIntakeLeft = new SparkMax(Constants.intakeAlgaeLeft, MotorType.kBrushless);
-        algaeIntakeRight = new SparkMax(Constants.intakeAlgaeRight, MotorType.kBrushless);
-        coralIntake = new VictorSPX(Constants.intakeCoral);
+        angulationCoralMotor = new SparkMax(Constants.kIntakeAngularCoralMotorID, MotorType.kBrushless);
+        angulationAlgaeMotor = new SparkMax(Constants.kIntakeAngularAlgaeMotorID, MotorType.kBrushed);
+        algaeIntakeLeft = new SparkMax(Constants.kIntakeAlgaeLeftID, MotorType.kBrushless);
+        algaeIntakeRight = new SparkMax(Constants.kIntakeAlgaeRightID, MotorType.kBrushless);
+        coralIntake = new VictorSPX(Constants.kIntakeCoralID);
 
         intakePID = new PIDController(Constants.kIntakeKP, Constants.kIntakeKI, Constants.kIntakeKD);
         intakePID.enableContinuousInput(0, 0.02);

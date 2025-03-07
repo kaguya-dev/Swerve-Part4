@@ -152,7 +152,8 @@ public class Constants {
     public static final double[] PIDSwerve = { kSwerveAngleKD, kSwerveAngleKI, kSwerveAngleKD };
 
     // Intake Subsystem IDs
-    public static final int kIntakeAngularMotorID = 0; // ID for the intake angular motor
+    public static final int kIntakeAngularAlgaeMotorID = 0; // ID for the intake angular motor
+    public static final int kIntakeAngularCoralMotorID = 0; // ID for the intake angular motor
     public static final int kIntakeAlgaeLeftID = 0; // ID for the left algae intake motor
     public static final int kIntakeAlgaeRightID = 0; // ID for the right algae intake motor
     public static final int kIntakeCoralID = 0; // ID for the coral intake motor
@@ -187,4 +188,5 @@ public class Constants {
     public static final double kAngleAlignKP = 0.01; // Proportional constant for angle alignment
     public static final double kAngleAlignKI = 0; // Integral constant for angle alignment
     public static final double kAngleAlignKD = 0; // Derivative constant for angle alignment
+    public static int intakeCoral;
 }

@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Commands.Drive;
+import frc.robot.Commands.TeleopSwerve.Drive;
 import frc.robot.Subsystems.ScoreSystem.ElevatorSubsystem;
 import frc.robot.Subsystems.Sensors.IMUSubsystem;
 import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
@@ -36,8 +36,8 @@ public class RobotContainer {
       imu = new IMUSubsystem();
       driver = new DriveSubsystem();
       //j1 = new GenericHID(Constants.JOY_PORT);
-      ps1 = new PS5Controller(Constants.JOY_PORT);
-      ps2 = new PS5Controller(1);
+      ps1 = new PS5Controller(Constants.kDriveControllerID);
+      ps2 = new PS5Controller(Constants.kScoreControllerID);
       configureBindings();
       
 
