@@ -36,8 +36,8 @@ public class IntakeSubsystem extends SubsystemBase{
     private SparkMaxConfig algaeRightConfig;
 
     public IntakeSubsystem(){
-        angulationCoralMotor = new SparkMax(Constants.intakeAngularMotor, MotorType.kBrushless);
-        angulationAlgaeMotor = new SparkMax(Constants.intakeAngularMotor, MotorType.kBrushed);
+        angulationCoralMotor = new SparkMax(Constants.intakeAngularCoralMotor, MotorType.kBrushless);
+        angulationAlgaeMotor = new SparkMax(Constants.intakeAngularAlgaeMotor, MotorType.kBrushed);
         algaeIntakeLeft = new SparkMax(Constants.intakeAlgaeLeft, MotorType.kBrushless);
         algaeIntakeRight = new SparkMax(Constants.intakeAlgaeRight, MotorType.kBrushless);
         coralIntake = new VictorSPX(Constants.intakeCoral);
