@@ -4,25 +4,21 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
+
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS5Controller;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
 import frc.robot.Commands.TeleopSwerve.Drive;
-import frc.robot.Subsystems.ScoreSubsystem.IntakeSubsystem;
-import frc.robot.Subsystems.Sensors.FishEye;
-import frc.robot.Subsystems.Sensors.IMUSubsystem;
-import frc.robot.Utils.Constants;
-
-/**
- * This class is where the bulk of the robot should be declared.
- */
-import frc.robot.Commands.Drive;
 import frc.robot.Subsystems.Sensors.IMUSubsystem;
 import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
+import frc.robot.Utils.Constants;
 
 @Logged(name = "Container")
 public class RobotContainer {
@@ -37,7 +33,7 @@ public class RobotContainer {
       imu = new IMUSubsystem();
       driver = new DriveSubsystem();
       //j1 = new GenericHID(Constants.JOY_PORT);
-      ps1 = new PS5Controller(Constants.JOY_PORT);
+      ps1 = new PS5Controller(Constants.kDriveControllerID);
       configureBindings();
       
 
@@ -60,32 +56,6 @@ public class RobotContainer {
     }
   
     private void configureBindings() {
-        // Reset the IMU yaw when button 2 on joystick 1 is pressed
-        new JoystickButton(j1, 2).whileTrue(Commands.run(() -> imu.resetYaw()));
-
-        // Control coral intake with button 3 on joystick 2
-        new JoystickButton(j2, 3)
-                .onTrue(Commands.run(() -> scoreIntake.coralIntake(Constants.coralIntakePower))) // Enable coral intake
-                .onFalse(Commands.run(() -> scoreIntake.coralDisable())); // Disable coral intake
-
-        // Control algae intake (forward) with button 2 on joystick 2
-        new JoystickButton(j2, 2)
-                .onTrue(Commands.run(() -> scoreIntake.algaeIntake(Constants.algaeIntakePower, true))) // Enable algae intake (forward)
-                .onFalse(Commands.run(() -> scoreIntake.algaeIntakeDisable())); // Disable algae intake
-
-        // Control algae intake (reverse) with button 1 on joystick 2
-        new JoystickButton(j2, 1)
-                .onTrue(Commands.run(() -> scoreIntake.algaeIntake(Constants.algaeIntakePower, false))) // Enable algae intake (reverse)
-                .onFalse(Commands.run(() -> scoreIntake.algaeIntakeDisable())); // Disable algae intake
-    }
-
-    /**
-     * Returns the current gyro angle as a Rotation2d object.
-     *
-     * @return The current gyro angle.
-     */
-    public static Rotation2d getGyroAngleAsR2D() {
-        return new Rotation2d(imu.getYaw());
 
       new JoystickButton(ps1,4).whileTrue(Commands.run(() -> imu.resetYaw())); 
     }
@@ -94,13 +64,7 @@ public class RobotContainer {
       return new Rotation2d(imu.getYaw());
     }
 
-    /**
-     * Returns the selected autonomous command from the auto chooser.
-     *
-     * @return The selected autonomous command.
-     */
-    /*public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
-    }*/
+  public Command getAutonomousCommand() {
+    return Commands.print("No autonomous command configured");
+  }
 }
-

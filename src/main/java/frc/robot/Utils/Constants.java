@@ -24,88 +24,78 @@ public class Constants {
      * Enum representing the constants for each swerve module.
      * This includes motor IDs, CANcoder IDs, and module numbers.
      */
-    public enum SwerveModulesContants {
-        kMOD0( // Front Left (Inverted)
-                MOTOR_LEFT_ANGULAR_FRONT,
-                MOTOR_LEFT_DRIVER_FRONT,
-                CANCODER_FRONT_LEFT,
-                2),
-
-        kMOD1( // Front Right (Inverted)
-                MOTOR_RIGHT_ANGULAR_FRONT,
-                MOTOR_RIGHT_DRIVER_FRONT,
-                CANCODER_FRONT_RIGHT,
-                3),
-
-        kMOD2( // Back Left (Inverted)
-                MOTOR_LEFT_ANGULAR_BACK,
-                MOTOR_LEFT_DRIVER_BACK,
-                CANCODER_BACK_LEFT,
-                4),
-
-        kMOD3( // Back Right (Inverted)
-                MOTOR_RIGHT_ANGULAR_BACK,
-                MOTOR_RIGHT_DRIVER_BACK,
-                CANCODER_BACK_RIGHT,
-                1);
-
-        private int moduleNumber;
-        private int driveMotorID;
-        private int angleMotorID;
-        private int cancoderID;
-
-        /**
-         * Constructor for the SwerveModulesContants enum.
-         *
-         * @param motorAngular The ID of the angular motor.
-         * @param motorDriver The ID of the drive motor.
-         * @param cancoder The ID of the CANcoder.
-         * @param moduleNumber The number of the module.
-         */
-        SwerveModulesContants(int motorAngular, int motorDriver, int cancoder, int moduleNumber) {
-            this.angleMotorID = motorAngular;
-            this.driveMotorID = motorDriver;
-            this.cancoderID = cancoder;
-            this.moduleNumber = moduleNumber;
+    public enum SwerveModuleConstants {
+       
+            MOD0(// Front Left (Inverted)
+                    MOTOR_LEFT_ANGULAR_FRONT,
+                    MOTOR_LEFT_DRIVER_FRONT,
+                    CANCODER_FRONT_LEFT,
+                    CANCODER_FRONT_LEFT_OFFSET,
+                    2, true),
+    
+            MOD1(// Front Right (Inverted)
+                    MOTOR_RIGHT_ANGULAR_FRONT,
+                    MOTOR_RIGHT_DRIVER_FRONT,
+                    CANCODER_FRONT_RIGHT,
+                    CANCODER_FRONT_RIGHT_OFFSET,
+                    3, false),
+    
+            MOD2(// Back Left (Inverted)
+                    MOTOR_LEFT_ANGULAR_BACK,
+                    MOTOR_LEFT_DRIVER_BACK,
+                    CANCODER_BACK_LEFT,
+                    CANCODER_BACK_LEFT_OFFSET,
+                    0, false),
+    
+            MOD3(// Back Right (Inverted)
+                    MOTOR_RIGHT_ANGULAR_BACK,
+                    MOTOR_RIGHT_DRIVER_BACK,
+                    CANCODER_BACK_RIGHT,
+                    CANCODER_BACK_RIGHT_OFFSET,
+                    1, false);
+                
+    
+            public int getModuleNumber() {
+                return moduleNumber;
+            }
+    
+            public int getDriveMotorID() {
+                return driveMotorID;
+            }
+    
+            public int getAngleMotorID() {
+                return angleMotorID;
+            }
+    
+            public int getCancoderID() {
+                return cancoderID;
+            }
+    
+            public double getCancoderOffSet(){
+                return cancoderOffset;
+            }
+    
+            public boolean isReversed() {
+                return isReversed;
+            }
+    
+            private int moduleNumber;
+            private int driveMotorID;
+            private int angleMotorID;
+            private int cancoderID;
+            private double cancoderOffset;
+            private boolean isReversed;
+            
+    
+            SwerveModuleConstants(int motorAngular, int motorDriver, int cancoder, double cancoderOffset, int moduleNumber, boolean isReversed ) {
+                this.angleMotorID = motorAngular;
+                this.driveMotorID = motorDriver;
+                this.cancoderID = cancoder;
+                this.cancoderOffset = cancoderOffset;
+                this.moduleNumber = moduleNumber;
+                this.isReversed = isReversed;
+            }
         }
-
-        /**
-         * Returns the module number.
-         *
-         * @return The module number.
-         */
-        public int getModuleNumber() {
-            return moduleNumber;
-        }
-
-        /**
-         * Returns the drive motor ID.
-         *
-         * @return The drive motor ID.
-         */
-        public int getDriveMotorID() {
-            return driveMotorID;
-        }
-
-        /**
-         * Returns the angular motor ID.
-         *
-         * @return The angular motor ID.
-         */
-        public int getAngleMotorID() {
-            return angleMotorID;
-        }
-
-        /**
-         * Returns the CANcoder ID.
-         *
-         * @return The CANcoder ID.
-         */
-        public int getCancoderID() {
-            return cancoderID;
-        }
-    }
-
     // Drivetrain Kinematics
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
             new Translation2d(kWheelBase / 2, kTrackWidth / 2), // Front left
@@ -114,27 +104,31 @@ public class Constants {
             new Translation2d(-kWheelBase / 2, -kTrackWidth / 2) // Back right
     );
 
-    // Motor & Encoder IDs
-
-    // Front Left
+   // Motor & Encoder IDs
+    //
+    //FRONTAL LEFT
     public static final int MOTOR_LEFT_DRIVER_FRONT = 1;
     public static final int MOTOR_LEFT_ANGULAR_FRONT = 2;
-    public static final int CANCODER_FRONT_LEFT = 11;
+    public static final int CANCODER_FRONT_LEFT = 21;
+    public static final double CANCODER_FRONT_LEFT_OFFSET = -0.20849609375;
 
-    // Back Left
+    //BACK LEFT
     public static final int MOTOR_LEFT_DRIVER_BACK = 3;
     public static final int MOTOR_LEFT_ANGULAR_BACK = 4;
-    public static final int CANCODER_BACK_LEFT = 12;
+    public static final int CANCODER_BACK_LEFT = 22;
+    public static final double CANCODER_BACK_LEFT_OFFSET = -0.006103515625;
 
-    // Front Right
+    //FRONTAL RIGHT
     public static final int MOTOR_RIGHT_DRIVER_BACK = 5;
     public static final int MOTOR_RIGHT_ANGULAR_BACK = 6;
-    public static final int CANCODER_FRONT_RIGHT = 13;
+    public static final int CANCODER_FRONT_RIGHT = 23;
+    public static final double CANCODER_FRONT_RIGHT_OFFSET = -0.76171875 ;
 
-    // Back Right
+    //BACK RIGHT
     public static final int MOTOR_RIGHT_DRIVER_FRONT = 7;
     public static final int MOTOR_RIGHT_ANGULAR_FRONT = 8;
-    public static final int CANCODER_BACK_RIGHT = 14;
+    public static final int CANCODER_BACK_RIGHT = 24;
+    public static final double CANCODER_BACK_RIGHT_OFFSET = -0.209228515625;
 
     // Joystick & Pigeon Configuration
     public static final int kDriveControllerID = 0;
@@ -150,9 +144,9 @@ public class Constants {
     public static final double kControllerDeadband = 0.05; // Deadband for controller inputs
 
     // PID Constants for Swerve
-    public static final double kSwerveAngleKP = 0.005; // Proportional constant for swerve angle control
-    public static final double kSwerveAngleKI = 0.0000001; // Integral constant for swerve angle control
-    public static final double kSwerveAngleKD = 0.0001; // Derivative constant for swerve angle control
+    public static final double kSwerveAngleKP = 0.002; 
+    public static final double kSwerveAngleKI = 0.0000001; 
+    public static final double kSwerveAngleKD = 0.000;
 
     // Array of PID constants for swerve
     public static final double[] PIDSwerve = { kSwerveAngleKD, kSwerveAngleKI, kSwerveAngleKD };

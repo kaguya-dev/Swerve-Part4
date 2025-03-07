@@ -12,8 +12,9 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Constants.SwerveModulesContants;
+import frc.robot.Utils.Constants;
+import frc.robot.Utils.Constants.SwerveModuleConstants;
+
 
 public class SwerveModule extends SubsystemBase{
     private SparkMax turnMotor;
@@ -25,7 +26,7 @@ public class SwerveModule extends SubsystemBase{
     private boolean isRight;
     private int moduleNumber;
 
-    public SwerveModule(SwerveModulesContants moduleID){
+    public SwerveModule(SwerveModuleConstants moduleID){
         this.turnMotor = new SparkMax(moduleID.getAngleMotorID(), MotorType.kBrushless);
         this.speedMotor = new SparkMax(moduleID.getDriveMotorID(), MotorType.kBrushless);
         this.absoluteEncoder = new CANcoder(moduleID.getCancoderID());
@@ -33,7 +34,7 @@ public class SwerveModule extends SubsystemBase{
         this.moduleNumber = moduleID.getModuleNumber();
         this.moduleState = new SwerveModuleState();
         updateState();
-        this.pidController = new PIDController(Constants.KP_Swerve_ANGLE, Constants.KI_Swerve_ANGLE, Constants.KD_Swerve_ANGLE);
+        this.pidController = new PIDController(Constants.kSwerveAngleKP, Constants.kSwerveAngleKI, Constants.kSwerveAngleKD);
         pidController.setIZone(5);
         pidController.setTolerance(1);
     }
@@ -45,7 +46,7 @@ public class SwerveModule extends SubsystemBase{
 
     private void updateState(){
         moduleState.angle = getAngleInR2D();
-        double stateSpeed = (speedEncoder.getVelocity() * Constants.kWheelCircuferenceMeters) / 60;
+        double stateSpeed = (speedEncoder.getVelocity() * Constants.kWheelCircumferenceMeters) / 60;
 
         moduleState.speedMetersPerSecond = stateSpeed;
 
@@ -85,9 +86,9 @@ public class SwerveModule extends SubsystemBase{
     public void setDesiredState(SwerveModuleState desiredState) {
         desiredState.optimize( getState().angle);
 
-        double speedPower = (desiredState.speedMetersPerSecond / Constants.MAX_SPEED) * (isRight? -1 : 1);
+        double speedPower = (desiredState.speedMetersPerSecond / Constants.kMaxPower) * (isRight? -1 : 1);
         SmartDashboard.putNumber("SET PRE-Speed mod n".concat(String.valueOf(moduleNumber)), speedPower);
-        setSpeedPower(MathUtil.clamp(speedPower, -Constants.MAX_POWER, Constants.MAX_POWER));
+        setSpeedPower(MathUtil.clamp(speedPower, -Constants.kMaxPower, Constants.kMaxPower));
         SmartDashboard.putNumber("SET CLAMPED-speed mod n".concat(String.valueOf(moduleNumber)), speedPower);
 
         double setpoint = desiredState.angle.getDegrees();
