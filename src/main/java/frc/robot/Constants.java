@@ -153,8 +153,8 @@ public class Constants {
     public static final double intakeKD = 0;
 
     //Elevator Subsystem IDs
-    public static final int kLeftElevatorMotorID = 0;
-    public static final int kRightElevatorMotorID = 0;
+    public static final int kLeftElevatorMotorID = 13;
+    public static final int kRightElevatorMotorID = 14;
     public static final int kMicroSwitchPWMPort = 0;
 
     //Elevator PID Constants

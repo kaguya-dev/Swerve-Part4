@@ -19,7 +19,8 @@ import frc.robot.Constants;
 public class IntakeSubsystem extends SubsystemBase{
 
     //Motors
-    private SparkMax angulationMotor;
+    private SparkMax angulationCoralMotor;
+    private SparkMax angulationAlgaeMotor;
     private SparkMax algaeIntakeLeft;
     private SparkMax algaeIntakeRight;
     private VictorSPX coralIntake;
@@ -31,12 +32,14 @@ public class IntakeSubsystem extends SubsystemBase{
     private RelativeEncoder angulationEncoder;
 
     //Configurators
-    private SparkMaxConfig angulationConfig;
+    private SparkMaxConfig angulationCoralConfig;
+    private SparkMaxConfig angulationAlgaeConfig;
     private SparkMaxConfig algaeLeftConfig;
     private SparkMaxConfig algaeRightConfig;
 
     public IntakeSubsystem(){
-        angulationMotor = new SparkMax(Constants.intakeAngularMotor, MotorType.kBrushed);
+        angulationCoralMotor = new SparkMax(Constants.intakeAngularMotor, MotorType.kBrushless);
+        angulationAlgaeMotor = new SparkMax(Constants.intakeAngularMotor, MotorType.kBrushed);
         algaeIntakeLeft = new SparkMax(Constants.intakeAlgaeLeft, MotorType.kBrushless);
         algaeIntakeRight = new SparkMax(Constants.intakeAlgaeRight, MotorType.kBrushless);
         coralIntake = new VictorSPX(Constants.intakeCoral);
@@ -44,10 +47,13 @@ public class IntakeSubsystem extends SubsystemBase{
         intakePID = new PIDController(Constants.intakeKP, Constants.intakeKI, Constants.intakeKD);
         intakePID.enableContinuousInput(0, 0.02);
 
-        //angulationEncoder = angulationMotor.getAlternateEncoder();
-        angulationConfig.alternateEncoder.countsPerRevolution(360);
-        angulationConfig.idleMode(IdleMode.kBrake);
-        angulationMotor.configure(angulationConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        //angulationEncoder = angulationCoralMotor.getAlternateEncoder();
+        angulationCoralConfig.alternateEncoder.countsPerRevolution(360);
+        angulationCoralConfig.idleMode(IdleMode.kBrake);
+        angulationCoralMotor.configure(angulationCoralConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        angulationAlgaeConfig.idleMode(IdleMode.kBrake);
+        angulationAlgaeConfig.inverted(false);
 
         algaeLeftConfig.inverted(false);
         algaeLeftConfig.idleMode(IdleMode.kBrake);
@@ -70,7 +76,7 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     private void angulationSetPower(double power){
-        angulationMotor.set(power);
+        angulationCoralMotor.set(power);
     }
 
     public void coralIntake(double power){

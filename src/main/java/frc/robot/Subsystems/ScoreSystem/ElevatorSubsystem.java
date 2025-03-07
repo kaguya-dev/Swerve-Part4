@@ -12,6 +12,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -87,15 +88,20 @@ public class ElevatorSubsystem extends SubsystemBase {
      *
      * @param power The power to apply to the motors, clamped between -kElevatorSpeedClamper and kElevatorSpeedClamper.
      */
-    private void powerElevator(double power) {
+    public void powerElevator(double power) {
         // Clamp the power to ensure it stays within safe limits
         power = MathUtil.clamp(power, -0.4, 0.4);
+        SmartDashboard.putNumber("Elevator Power", power);
 
         // Apply the power to both motors
         leftMotor.set(power);
         rightMotor.set(power);
     }
-
+    
+    public void elevatorDisable(){
+        leftMotor.set(0);
+        rightMotor.set(0);
+    }
     /**
      * Moves the elevator to a specific position using the PID controller.
      *

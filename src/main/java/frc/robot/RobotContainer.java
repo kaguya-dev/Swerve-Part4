@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.Drive;
+import frc.robot.Subsystems.ScoreSystem.ElevatorSubsystem;
 import frc.robot.Subsystems.Sensors.IMUSubsystem;
 import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
 
@@ -24,15 +25,18 @@ public class RobotContainer {
   public ChassisSpeeds swerveChassis;
   public static DriveSubsystem driver;
   public static IMUSubsystem imu;
+  public static ElevatorSubsystem elevatorEneable;
   
   public GenericHID j1;
-  public PS5Controller ps1;
+  public PS5Controller ps1, ps2;
   
     public RobotContainer() {
+      elevatorEneable = new ElevatorSubsystem();
       imu = new IMUSubsystem();
       driver = new DriveSubsystem();
       //j1 = new GenericHID(Constants.JOY_PORT);
       ps1 = new PS5Controller(Constants.JOY_PORT);
+      ps2 = new PS5Controller(1);
       configureBindings();
       
 
@@ -57,6 +61,15 @@ public class RobotContainer {
     private void configureBindings() {
 
       new JoystickButton(ps1,4).whileTrue(Commands.run(() -> imu.resetYaw())); 
+      
+      new JoystickButton(ps2, 5)
+      .onTrue(Commands.run(() -> elevatorEneable.powerElevator(0.40)))
+      .onFalse(Commands.run(() -> elevatorEneable.elevatorDisable()));
+
+      new JoystickButton(ps2, 6)
+      .whileTrue(Commands.run(() -> elevatorEneable.powerElevator(-0.40)))
+      .onFalse(Commands.run(() -> elevatorEneable.elevatorDisable()));
+
     }
   
     public static Rotation2d getGyroAngleAsR2D(){
