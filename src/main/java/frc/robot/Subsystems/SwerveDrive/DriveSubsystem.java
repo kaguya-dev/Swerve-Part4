@@ -10,7 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Utils.Constants;
 import frc.robot.RobotContainer;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -21,10 +21,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     public DriveSubsystem() {
         swerveMods = new SwerveModule[] {
-            new SwerveModule(Constants.SwerveModulesContants.MOD0),
-            new SwerveModule(Constants.SwerveModulesContants.MOD1),
-            new SwerveModule(Constants.SwerveModulesContants.MOD2),
-            new SwerveModule(Constants.SwerveModulesContants.MOD3) };
+            new SwerveModule(Constants.SwerveModuleConstants.MOD0),
+            new SwerveModule(Constants.SwerveModuleConstants.MOD1),
+            new SwerveModule(Constants.SwerveModuleConstants.MOD2),
+            new SwerveModule(Constants.SwerveModuleConstants.MOD3) 
+        };
         
         swerveMods[1].isRight(false);
         swerveMods[3].isRight(false);
@@ -39,13 +40,13 @@ public class DriveSubsystem extends SubsystemBase {
     public void drive(double xVelocity_m_per_s, double yVelocity_m_per_s, double omega_rad_per_s, boolean fieldcentric) {
         SwerveModuleState[] swerveModuleStates;
 
-        if (Math.abs(xVelocity_m_per_s) < Constants.JOY_DEADBAND)
+        if (Math.abs(xVelocity_m_per_s) < Constants.kDriveControllerID)
             xVelocity_m_per_s = 0;
 
-        if (Math.abs(yVelocity_m_per_s) < Constants.JOY_DEADBAND)
+        if (Math.abs(yVelocity_m_per_s) < Constants.kDriveControllerID)
             yVelocity_m_per_s = 0;
 
-        if (Math.abs(omega_rad_per_s) < Constants.JOY_DEADBAND)
+        if (Math.abs(omega_rad_per_s) < Constants.kDriveControllerID)
             omega_rad_per_s = 0;
 
         if (fieldcentric) { // field-centric swerve
@@ -63,7 +64,7 @@ public class DriveSubsystem extends SubsystemBase {
                             omega_rad_per_s));
         }
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.MAX_SPEED);
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.kMaxSpeed);
 
         for (SwerveModule mod : swerveMods) {
             SmartDashboard.putNumber("Actual State Angle mod n"

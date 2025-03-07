@@ -1,11 +1,11 @@
-package frc.robot.Commands;
+package frc.robot.Commands.TeleopSwerve;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
+import frc.robot.Utils.Constants;
 import frc.robot.RobotContainer;
 
 @Logged(name = "Drive")
@@ -37,9 +37,9 @@ public class Drive extends Command {
         double omegaInput = mOmegaSupplier.getAsDouble();
 
         RobotContainer.driver.drive(
-                xInput * Constants.MAX_SPEED,
-                yInput * Constants.MAX_SPEED,
-                omegaInput * Constants.MAX_ANGULAR_SPEED,
+                xInput * Constants.kMaxSpeed,
+                yInput * Constants.kMaxSpeed,
+                omegaInput * Constants.kMaxAngularSpeed,
                 mFieldCentrSupplier.getAsBoolean());
     }
 
