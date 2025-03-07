@@ -20,67 +20,45 @@ import frc.robot.Utils.Constants;
 /**
  * This class is where the bulk of the robot should be declared.
  */
+import frc.robot.Commands.Drive;
+import frc.robot.Subsystems.Sensors.IMUSubsystem;
+import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
+
+@Logged(name = "Container")
 public class RobotContainer {
-
-    // Chassis speeds for swerve drive
-    public ChassisSpeeds swerveChassis;
-
-   
-
-    // Subsystems
-    public static DriveSubsystem driver; 
-    public static IMUSubsystem imu; 
-    public static IntakeSubsystem scoreIntake; 
-    public static FishEye fisheye;
-
-    // Input devices
-    public GenericHID j1, j2; 
-    public PS5Controller ps1, ps2; 
-
+  public ChassisSpeeds swerveChassis;
+  public static DriveSubsystem driver;
+  public static IMUSubsystem imu;
+  
+  public GenericHID j1;
+  public PS5Controller ps1;
+  
     public RobotContainer() {
-        // Initialize subsystems
-        imu = new IMUSubsystem();
-        driver = new DriveSubsystem();
-        scoreIntake = new IntakeSubsystem();
-        fisheye = new FishEye();
+      imu = new IMUSubsystem();
+      driver = new DriveSubsystem();
+      //j1 = new GenericHID(Constants.JOY_PORT);
+      ps1 = new PS5Controller(Constants.JOY_PORT);
+      configureBindings();
+      
 
-        // Initialize input devices
-        j1 = new GenericHID(Constants.kDriveControllerID);
-        j2 = new GenericHID(Constants.kScoreControllerID);
+      // driver.setDefaultCommand(
+      //   new Drive(
+      //       () -> j1.getRawAxis(1),
+      //       () -> -j1.getRawAxis(0),
+      //       () -> j1.getRawAxis(4)*0.8 ,
+      //       () -> true));
 
-        // Configure button bindings
-        configureBindings();
-
-    // Build an auto chooser. This will use Commands.none() as the default option.
-    //autoChooser = AutoBuilder.buildAutoChooser();
-
-    // Another option that allows you to specify the default auto by its name
-    
-
-        // Initialize input devices
-        j1 = new GenericHID(Constants.kDriveControllerID);
-        j2 = new GenericHID(Constants.kScoreControllerID);
-
-        // Configure button bindings
-        configureBindings();
-
-        // Set the default command for the drive subsystem
-        driver.setDefaultCommand(
-                new Drive(
-                        () -> j1.getRawAxis(1), // X-axis input
-                        () -> -j1.getRawAxis(0), // Y-axis input
-                        () -> j1.getRawAxis(4) * 0.6, // Rotation input 
-                        () -> imu.isIMUFound() // Field-centric mode 
-                )
-        );
-
-        
+      driver.setDefaultCommand(
+          new Drive(
+            () -> ps1.getLeftX(),
+            () -> -ps1.getLeftY(),
+            () -> ps1.getRightX()*0.6,
+            () -> imu.getIMUAvaliable()
+          )
+      );
+      
     }
-
-    /**
-     * Configures button bindings for the robot.
-     * Maps buttons to specific commands.
-     */
+  
     private void configureBindings() {
         // Reset the IMU yaw when button 2 on joystick 1 is pressed
         new JoystickButton(j1, 2).whileTrue(Commands.run(() -> imu.resetYaw()));
@@ -108,6 +86,12 @@ public class RobotContainer {
      */
     public static Rotation2d getGyroAngleAsR2D() {
         return new Rotation2d(imu.getYaw());
+
+      new JoystickButton(ps1,4).whileTrue(Commands.run(() -> imu.resetYaw())); 
+    }
+  
+    public static Rotation2d getGyroAngleAsR2D(){
+      return new Rotation2d(imu.getYaw());
     }
 
     /**
