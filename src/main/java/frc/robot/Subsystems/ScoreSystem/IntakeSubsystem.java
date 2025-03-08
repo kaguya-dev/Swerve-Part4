@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Utils.Constants;
 
@@ -18,16 +19,18 @@ public class IntakeSubsystem extends SubsystemBase{
 
     //Motors
     private SparkMax angulationCoralMotor;
-    private SparkMax angulationAlgaeMotor;
+    private SparkMax coralIntake;
     private SparkMax algaeIntakeLeft;
     private SparkMax algaeIntakeRight;
-    private VictorSPX coralIntake;
+    private VictorSPX algaeAngulation1;
+    private VictorSPX algaeAngulation2; //Following the 1
 
     //PID Controller
     private PIDController intakePID;
 
     //Encoders
-    private RelativeEncoder angulationEncoder;
+    private RelativeEncoder algaeAngulationEncoder;
+    private RelativeEncoder coralAngulationEncoder;
 
     //Configurators
     private SparkMaxConfig angulationCoralConfig;
@@ -37,15 +40,16 @@ public class IntakeSubsystem extends SubsystemBase{
 
     public IntakeSubsystem(){
         angulationCoralMotor = new SparkMax(Constants.kIntakeAngularCoralMotorID, MotorType.kBrushless);
-        angulationAlgaeMotor = new SparkMax(Constants.kIntakeAngularAlgaeMotorID, MotorType.kBrushed);
+        coralIntake = new SparkMax(Constants.kIntakeCoralMotorID, MotorType.kBrushless);
         algaeIntakeLeft = new SparkMax(Constants.kIntakeAlgaeLeftID, MotorType.kBrushless);
         algaeIntakeRight = new SparkMax(Constants.kIntakeAlgaeRightID, MotorType.kBrushless);
-        coralIntake = new VictorSPX(Constants.kIntakeCoralID);
+        algaeAngulation1 = new VictorSPX(Constants.kAlgaeAng_1_ID);
+        algaeAngulation2 = new VictorSPX(Constants.kAlgaeAng_2_ID);
 
         intakePID = new PIDController(Constants.kIntakeKP, Constants.kIntakeKI, Constants.kIntakeKD);
         intakePID.enableContinuousInput(0, 0.02);
 
-        //angulationEncoder = angulationCoralMotor.getAlternateEncoder();
+        //algaeAngulationEncoder = angulationCoralMotor.getAlternateEncoder();
         angulationCoralConfig.alternateEncoder.countsPerRevolution(360);
         angulationCoralConfig.idleMode(IdleMode.kBrake);
         angulationCoralMotor.configure(angulationCoralConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -58,31 +62,49 @@ public class IntakeSubsystem extends SubsystemBase{
         algaeRightConfig.inverted(true);
         algaeRightConfig.idleMode(IdleMode.kBrake);
 
+        algaeAngulationEncoder = algaeIntakeRight.getAlternateEncoder();
+        coralAngulationEncoder = angulationCoralMotor.getEncoder();
+
         algaeIntakeLeft.configure(algaeLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         algaeIntakeRight.configure(algaeRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        coralIntake.setNeutralMode(NeutralMode.Brake);
+        algaeAngulation1.setNeutralMode(NeutralMode.Brake);
+        algaeAngulation2.setNeutralMode(NeutralMode.Brake);
+        algaeAngulation2.follow(algaeAngulation1);
 
     }
 
     /**
      * @param position put in degrees
      */
-    public void setAngularPosition(double position){
-        double power = intakePID.calculate(angulationEncoder.getPosition(), position);
-        angulationSetPower(power);
+    public void setAlgaeAngularPosition(double position){
+        double power = intakePID.calculate(algaeAngulationEncoder.getPosition(), position);
+        angulationAlgaeSetPower(power);
     }
 
-    private void angulationSetPower(double power){
+    private void angulationAlgaeSetPower(double power){
+        algaeAngulation1.set(ControlMode.PercentOutput, power);
+    }
+
+    /**
+     * @param position put in degrees
+     */
+    public void setCoralAngularPosition(double position){
+        double power = intakePID.calculate(coralAngulationEncoder.getPosition(), position);
+        angulationCoralSetPower(power);
+    }
+
+    private void angulationCoralSetPower(double power){
         angulationCoralMotor.set(power);
     }
 
-    public void coralIntake(double power){
-        coralIntake.set(ControlMode.PercentOutput, power);
+
+    public void algaeAngulation(double power){
+        algaeAngulation1.set(ControlMode.PercentOutput, power);
     }
 
     public void coralDisable(){
-        coralIntake.set(ControlMode.PercentOutput, 0);
+        algaeAngulation1.set(ControlMode.PercentOutput, 0);
     }
 
     public void algaeIntake(double power, boolean input){
@@ -98,6 +120,12 @@ public class IntakeSubsystem extends SubsystemBase{
     public void algaeIntakeDisable(){
         algaeIntakeLeft.set(0);
         algaeIntakeRight.set(0);
+    }
+
+    @Override
+    public void periodic(){
+        SmartDashboard.putNumber("Algae Angulation Value", algaeAngulationEncoder.getPosition());
+        SmartDashboard.putNumber("Coral Angulation Value", coralAngulationEncoder.getPosition());
     }
 
 }

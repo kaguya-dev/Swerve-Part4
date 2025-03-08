@@ -152,11 +152,12 @@ public class Constants {
     public static final double[] PIDSwerve = { kSwerveAngleKD, kSwerveAngleKI, kSwerveAngleKD };
 
     // Intake Subsystem IDs
-    public static final int kIntakeAngularAlgaeMotorID = 10; // ID for the intake angular motor
-    public static final int kIntakeAngularCoralMotorID = 12; // ID for the intake angular motor
-    public static final int kIntakeAlgaeLeftID = 11; // ID for the left algae intake motor
-    public static final int kIntakeAlgaeRightID = 9; // ID for the right algae intake motor
-    public static final int kIntakeCoralID = 13; // ID for the coral intake motor
+    public static final int kIntakeAngularCoralMotorID = 13; // ID for the intake angular motor
+    public static final int kIntakeCoralMotorID = 14; // ID for the intake angular motor
+    public static final int kIntakeAlgaeLeftID = 9; // ID for the left algae intake motor
+    public static final int kIntakeAlgaeRightID = 12; // ID for the right algae intake motor
+    public static final int kAlgaeAng_1_ID = 10; // ID for the coral intake motor 1
+    public static final int kAlgaeAng_2_ID = 11; // ID for the coral intake motor 2
 
     // Intake PID Constants
     public static final double kIntakeKP = 0.01; // Proportional constant for intake control
