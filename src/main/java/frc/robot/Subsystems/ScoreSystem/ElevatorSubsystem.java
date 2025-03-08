@@ -91,5 +91,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         if (calibrationSwitch.get()) {
             lowCalibratePID();
         }
+        
+    SmartDashboard.putNumber("Elevator Encoder Position", elevatorEncoder.getPosition());
     }
 }

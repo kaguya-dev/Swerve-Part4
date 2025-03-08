@@ -41,7 +41,7 @@ public class RobotContainer {
 
     private void configureBindings() {
         new JoystickButton(ps1, 4).whileTrue(Commands.run(() -> imu.resetYaw()));
-
+        
         new JoystickButton(ps2, 5)
             .whileTrue(new ElevatorJS(() -> true, () -> false));
         
