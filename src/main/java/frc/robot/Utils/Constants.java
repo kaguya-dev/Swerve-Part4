@@ -152,11 +152,11 @@ public class Constants {
     public static final double[] PIDSwerve = { kSwerveAngleKD, kSwerveAngleKI, kSwerveAngleKD };
 
     // Intake Subsystem IDs
-    public static final int kIntakeAngularAlgaeMotorID = 0; // ID for the intake angular motor
-    public static final int kIntakeAngularCoralMotorID = 0; // ID for the intake angular motor
-    public static final int kIntakeAlgaeLeftID = 0; // ID for the left algae intake motor
-    public static final int kIntakeAlgaeRightID = 0; // ID for the right algae intake motor
-    public static final int kIntakeCoralID = 0; // ID for the coral intake motor
+    public static final int kIntakeAngularAlgaeMotorID = 10; // ID for the intake angular motor
+    public static final int kIntakeAngularCoralMotorID = 12; // ID for the intake angular motor
+    public static final int kIntakeAlgaeLeftID = 11; // ID for the left algae intake motor
+    public static final int kIntakeAlgaeRightID = 9; // ID for the right algae intake motor
+    public static final int kIntakeCoralID = 13; // ID for the coral intake motor
 
     // Intake PID Constants
     public static final double kIntakeKP = 0.01; // Proportional constant for intake control
@@ -168,8 +168,8 @@ public class Constants {
     public static final double algaeIntakePower = 0.50; // Power for algae intake
 
     // Elevator Subsystem IDs
-    public static final int kLeftElevatorMotorID = 0; // ID for the left elevator motor
-    public static final int kRightElevatorMotorID = 0; // ID for the right elevator motor
+    public static final int kLeftElevatorMotorID = 14; // ID for the left elevator motor
+    public static final int kRightElevatorMotorID = 13; // ID for the right elevator motor
     public static final int kMicroSwitchPWMPort = 0; // PWM port for the microswitch
 
     // Elevator PID Constants

@@ -91,17 +91,27 @@ public class ElevatorSubsystem extends SubsystemBase {
      */
     public void powerElevator(double power) {
         // Clamp the power to ensure it stays within safe limits
-        power = MathUtil.clamp(power, -0.4, 0.4);
+        power = MathUtil.clamp(power, -0.5, 0.5);
         SmartDashboard.putNumber("Elevator Power", power);
 
         // Apply the power to both motors
         leftMotor.set(power);
         rightMotor.set(power);
     }
-    
+
     public void elevatorDisable(){
         leftMotor.set(0);
         rightMotor.set(0);
+    }
+
+    public void  transformPov(int pov, double power){
+        if(pov == 0){
+        powerElevator(power); 
+        } else if(pov == 180){
+            powerElevator(-power);
+        } else {
+           elevatorDisable();
+        }
     }
     /**
      * Moves the elevator to a specific position using the PID controller.

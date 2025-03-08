@@ -32,9 +32,9 @@ public class RobotContainer {
   public PS5Controller ps1, ps2;
   
     public RobotContainer() {
-      elevatorEneable = new ElevatorSubsystem();
       imu = new IMUSubsystem();
       driver = new DriveSubsystem();
+      elevatorEneable = new ElevatorSubsystem();
       //j1 = new GenericHID(Constants.JOY_PORT);
       ps1 = new PS5Controller(Constants.kDriveControllerID);
       ps2 = new PS5Controller(Constants.kScoreControllerID);
@@ -61,15 +61,19 @@ public class RobotContainer {
   
     private void configureBindings() {
 
-      new JoystickButton(ps1,4).whileTrue(Commands.run(() -> imu.resetYaw())); 
+      new JoystickButton(ps1,4).whileTrue(Commands.run(() -> imu.resetYaw()));
+      
+  
       
       new JoystickButton(ps2, 5)
-      .onTrue(Commands.run(() -> elevatorEneable.powerElevator(0.40)))
-      .onFalse(Commands.run(() -> elevatorEneable.elevatorDisable()));
+      .whileTrue(Commands.run(() -> elevatorEneable.powerElevator(0.50)))
+      .whileFalse(Commands.run(() -> elevatorEneable.elevatorDisable()));
 
+    
       new JoystickButton(ps2, 6)
-      .whileTrue(Commands.run(() -> elevatorEneable.powerElevator(-0.40)))
-      .onFalse(Commands.run(() -> elevatorEneable.elevatorDisable()));
+      .whileTrue(Commands.run(() -> elevatorEneable.powerElevator(-0.50)))
+      .whileFalse(Commands.run(() -> elevatorEneable.elevatorDisable()));
+  
 
     }
   
