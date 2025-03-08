@@ -1,5 +1,5 @@
 // Necessary imports for the code to function
-package frc.robot.Commands.Auto;
+package frc.robot.Commands.Auto.DriveAuto;
 
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.controller.PIDController;
