@@ -11,10 +11,10 @@ public class ElevatorJS extends Command{
     private BooleanSupplier rightButton;
     private PS5Controller joystick;
 
-    public ElevatorJS(BooleanSupplier leftButton, BooleanSupplier rightButton, PS5Controller joystick) {
-        this.leftButton = leftButton;
-        this.rightButton = rightButton;
+    public ElevatorJS(PS5Controller joystick) {
         this.joystick = joystick;
+        leftButton = () -> joystick.getL1ButtonPressed();
+        rightButton = () -> joystick.getR1ButtonPressed();
 
         addRequirements(RobotContainer.elevatorEneable);
     }
