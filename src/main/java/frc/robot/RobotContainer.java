@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.TeleopSwerve.Drive;
-import frc.robot.Commands.ScoreCommand.ElevatorJS;
+import frc.robot.ScoreCommand.ElevatorJS;
 import frc.robot.Subsystems.ScoreSystem.ElevatorSubsystem;
 import frc.robot.Subsystems.Sensors.IMUSubsystem;
 import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
@@ -47,6 +47,7 @@ public class RobotContainer {
         
         new JoystickButton(ps2, 6)
             .whileTrue(new ElevatorJS(() -> false, () -> true));
+        
     }
 
     public static Rotation2d getGyroAngleAsR2D() {

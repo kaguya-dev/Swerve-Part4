@@ -66,15 +66,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         rightMotor.set(0);
     }
 
-    public void  transformPov(int pov, double power){
-        if(pov == 0){
-        powerElevator(power); 
-        } else if(pov == 180){
-            powerElevator(-power);
-        } else {
-           elevatorDisable();
-        }
-    }
     /**
      * Moves the elevator to a specific position using the PID controller.
      *

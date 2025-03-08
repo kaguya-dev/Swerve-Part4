@@ -1,4 +1,4 @@
-package frc.robot.Commands.ScoreCommand;
+package frc.robot.ScoreCommand;
 
 import java.util.function.BooleanSupplier;
 
