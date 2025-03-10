@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Commands.TeleopSwerve.Drive;
 import frc.robot.ScoreCommand.ElevatorJS;
 import frc.robot.Subsystems.ScoreSystem.ElevatorSubsystem;
@@ -41,12 +42,6 @@ public class RobotContainer {
 
     private void configureBindings() {
         new JoystickButton(ps1, 4).whileTrue(Commands.run(() -> imu.resetYaw()));
-        
-        new JoystickButton(ps2, 5)
-            .whileTrue(new ElevatorJS(() -> true, () -> false));
-        
-        new JoystickButton(ps2, 6)
-            .whileTrue(new ElevatorJS(() -> false, () -> true));
         
     }
 
