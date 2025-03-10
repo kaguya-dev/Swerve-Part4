@@ -40,13 +40,13 @@ public class DriveSubsystem extends SubsystemBase {
     public void drive(double xVelocity_m_per_s, double yVelocity_m_per_s, double omega_rad_per_s, boolean fieldcentric) {
         SwerveModuleState[] swerveModuleStates;
 
-        if (Math.abs(xVelocity_m_per_s) < Constants.kDriveControllerID)
+        if (Math.abs(xVelocity_m_per_s) < Constants.kControllerDeadband)
             xVelocity_m_per_s = 0;
 
-        if (Math.abs(yVelocity_m_per_s) < Constants.kDriveControllerID)
+        if (Math.abs(yVelocity_m_per_s) < Constants.kControllerDeadband)
             yVelocity_m_per_s = 0;
 
-        if (Math.abs(omega_rad_per_s) < Constants.kDriveControllerID)
+        if (Math.abs(omega_rad_per_s) < Constants.kControllerDeadband)
             omega_rad_per_s = 0;
 
         if (fieldcentric) { // field-centric swerve
