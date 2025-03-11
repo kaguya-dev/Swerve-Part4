@@ -146,8 +146,8 @@ public class Constants {
     public static final double kControllerDeadband = 0.05; // Deadband for controller inputs
 
     // PID Constants for Swerve
-    public static final double kSwerveAngleKP = 0.003;
-    public static final double kSwerveAngleKI = 0.000001;
+    public static final double kSwerveAngleKP = 0.005;
+    public static final double kSwerveAngleKI = 0.000003;
     public static final double kSwerveAngleKD = 0.0001;
 
     // Array of PID constants for swerve
