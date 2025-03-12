@@ -54,7 +54,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void powerElevator(double power) {
-        power = MathUtil.clamp(power, -0.5, 0.5);
+        //power = MathUtil.clamp(power, -0.65, 0.65);
         SmartDashboard.putNumber("Elevator Power", power);
 
         leftMotor.set(power);

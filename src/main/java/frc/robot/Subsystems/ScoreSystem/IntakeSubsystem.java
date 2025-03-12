@@ -42,6 +42,7 @@ public class IntakeSubsystem extends SubsystemBase{
 
         //algaeAngulationEncoder = angulationCoralMotor.getAlternateEncoder();
         //angulationCoralConfig.alternateEncoder.countsPerRevolution(360);
+        
         angulationCoralConfig.idleMode(IdleMode.kBrake);
         angulationCoralMotor.configure(angulationCoralConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -60,10 +61,6 @@ public class IntakeSubsystem extends SubsystemBase{
     public void angulationCoralSetPower(double power){
         angulationCoralMotor.set(power);
     }
-
-    // public void algaeAngulation(double power){
-    //     algaeAngulation1.set(ControlMode.PercentOutput, power);
-    // }
 
     public void coralDisable(){
         coralIntake.set(ControlMode.PercentOutput, 0);

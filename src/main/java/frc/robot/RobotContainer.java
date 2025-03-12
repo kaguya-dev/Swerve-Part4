@@ -48,7 +48,7 @@ public class RobotContainer {
         new JoystickButton(ps1, 4).whileTrue(Commands.run(() -> imu.resetYaw()));
         
         //Elevator
-        new Trigger(()-> ps2.getL2Button())
+        new Trigger(()-> ps2.getR1Button())
         .whileTrue(new ElevatorJS(()-> true, ()-> false));
 
         new Trigger(()-> ps2.getL1Button())
@@ -59,7 +59,7 @@ public class RobotContainer {
         .whileTrue(Commands.run(()-> intake.coralIntake(0.35)))
         .whileFalse(Commands.run(()-> intake.coralDisable()));
 
-        new Trigger(()-> ps2.getR1Button())
+        new Trigger(()-> ps2.getL2Button())
         .whileTrue(Commands.run(()-> intake.coralIntake(-0.35)))
         .whileFalse(Commands.run(()-> intake.coralDisable()));
 
