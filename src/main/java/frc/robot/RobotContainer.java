@@ -5,6 +5,10 @@ import org.ejml.sparse.ComputePermutation;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.PS5Controller;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -23,6 +27,7 @@ public class RobotContainer {
     public static IMUSubsystem imu;
     public static ElevatorSubsystem elevatorEneable;
     public static IntakeSubsystem intake;
+    public static PowerDistribution pdh;
     public PS5Controller ps1, ps2;
 
     public RobotContainer() {
@@ -32,7 +37,10 @@ public class RobotContainer {
         intake = new IntakeSubsystem();
         ps1 = new PS5Controller(Constants.kDriveControllerID);
         ps2 = new PS5Controller(Constants.kScoreControllerID);
+        pdh = new PowerDistribution(0, ModuleType.kRev);
         configureBindings();
+
+        Shuffleboard.getTab("Voltage").addDouble("VoltageValue", () -> pdh.getVoltage()).withWidget(WidgetType);
 
         driver.setDefaultCommand(
             new Drive(
@@ -65,7 +73,7 @@ public class RobotContainer {
 
         //Coral angulation
         new Trigger(() -> Math.abs(ps2.getLeftY()) > Constants.kControllerDeadband)
-        .whileTrue(Commands.run(() -> intake.controlCoralAngulation(ps2.getLeftY())));
+        .whileTrue(Commands.run(() -> intake.controlCoralAngulationWithAnalog(ps2.getLeftY())));
     }
 
     public static Rotation2d getGyroAngleAsR2D() {

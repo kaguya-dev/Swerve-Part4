@@ -16,35 +16,34 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Utils.Constants;
 
-public class IntakeSubsystem extends SubsystemBase{
+public class IntakeSubsystem extends SubsystemBase {
 
-    //Motors
-    private SparkMax angulationCoralMotor;
+    // Motors
+    private SparkMax angulationCoral;
     private VictorSPX coralIntake;
-    
-    //PID Controller
+
+    // PID Controller
     private PIDController coralIntakePID;
 
-    //Encoders and Triggers
+    // Encoders and Triggers
     private RelativeEncoder angulationEncoder;
     private DigitalInput limitTrigger;
 
-    //Configurators
+    // Configurators
     private SparkMaxConfig angulationCoralConfig;
 
-    public IntakeSubsystem(){
-        angulationCoralMotor = new SparkMax(Constants.kIntakeAngularCoralMotorID, MotorType.kBrushless);
+    public IntakeSubsystem() {
+        angulationCoral = new SparkMax(Constants.kIntakeAngularCoralMotorID, MotorType.kBrushless);
         angulationCoralConfig = new SparkMaxConfig();
         coralIntake = new VictorSPX(Constants.kIntakeCoralMotorID);
-        
 
-        coralIntakePID = new PIDController(Constants.kCoralIntakeKP, Constants.kCoralIntakeKI, Constants.kCoralIntakeKD);
+        coralIntakePID = new PIDController(Constants.kCoralIntakeKP, Constants.kCoralIntakeKI,
+                Constants.kCoralIntakeKD);
         coralIntakePID.enableContinuousInput(0, 0.02);
 
-        //algaeAngulationEncoder = angulationCoralMotor.getAlternateEncoder();
-        //angulationCoralConfig.alternateEncoder.countsPerRevolution(360);
         angulationCoralConfig.idleMode(IdleMode.kBrake);
-        angulationCoralMotor.configure(angulationCoralConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        angulationCoral.configure(angulationCoralConfig, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
 
         angulationEncoder = angulationCoral.getEncoder();
         limitTrigger = new DigitalInput(Constants.kMicroSwitchPWMPort);
@@ -54,41 +53,46 @@ public class IntakeSubsystem extends SubsystemBase{
     /**
      * @param position put in degrees
      */
-    public void setCoralAngularPosition(double position){
-        double power = coralIntakePID.calculate(coralAngulationEncoder.getPosition(), position);
+    public void setCoralAngularPosition(double position) {
+        double power = coralIntakePID.calculate(angulationEncoder.getPosition(), position);
         angulationCoralSetPower(power);
     }
 
-    public void angulationCoralSetPower(double power){
-        angulationCoralMotor.set(power);
+    public void angulationCoralSetPower(double power) {
+        angulationCoral.set(power);
     }
-
-    // public void algaeAngulation(double power){
-    //     algaeAngulation1.set(ControlMode.PercentOutput, power);
-    // }
-
-    public void coralDisable(){
+    public void coralDisable() {
         coralIntake.set(ControlMode.PercentOutput, 0);
     }
 
-    public void coralIntake(double power){
+    public void coralIntake(double power) {
         coralIntake.set(ControlMode.PercentOutput, power);
     }
 
-    public void controlCoralAngulation(double yAxisValue) {
+    public void controlCoralAngulationWithAnalog(double yAxisValue) {
         if (yAxisValue > Constants.kControllerDeadband) {
             angulationCoralSetPower(0.15);
-        } else if (yAxisValue < -Constants.kControllerDeadband) {
+        } else if ((yAxisValue < -Constants.kControllerDeadband) && !limitTrigger.get()) {
             angulationCoralSetPower(-0.15);
         } else {
             angulationCoralSetPower(0);
         }
     }
-   
+
+    public void controlCoralAngulationWithPOV(int pov) {
+        if (pov == 0) {
+            angulationCoralSetPower(0.15);
+        } else if ((pov == 180) && !limitTrigger.get()) {
+            angulationCoralSetPower(-0.15);
+        } else {
+            angulationCoralSetPower(0);
+        }
+    }
+
     @Override
-    public void periodic(){
-        //SmartDashboard.putNumber("Algae Angulation Value", algaeAngulationEncoder.getPosition());
-        SmartDashboard.putNumber("Coral Angulation Value", coralAngulationEncoder.getPosition());
+    public void periodic() {
+        SmartDashboard.putBoolean("TriggerSwitchCoral", limitTrigger.get());
+        SmartDashboard.putNumber("Coral Angulation Value", angulationEncoder.getPosition());
     }
 
 }
