@@ -177,7 +177,7 @@ public class Constants {
     // Elevator Subsystem IDs
     public static final int kLeftElevatorMotorID = 12; // ID for the left elevator motor
     public static final int kRightElevatorMotorID = 11; // ID for the right elevator motor
-    public static final int kMicroSwitchPWMPort = 0; // PWM port for the microswitch
+    public static final int kMicroSwitchPWMPort = 2; // PWM port for the microswitch
 
     // Elevator PID Constants
     public static final double kElevatorKP = 0.01; // Proportional constant for elevator control

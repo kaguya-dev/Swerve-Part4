@@ -64,9 +64,8 @@ public class IntakeSubsystem extends SubsystemBase {
     public void angulationCoralSetPower(double power) {
         angulationCoral.set(power);
     }
-    public void coralDisable() {
 
-    public void coralDisable(){
+    public void coralDisable() {
         coralIntake.set(ControlMode.PercentOutput, 0);
     }
 
@@ -75,15 +74,20 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void controlCoralAngulationWithAnalog(double yAxisValue) {
-        if (yAxisValue > Constants.kControllerDeadband) {
-            angulationCoralSetPower(0.15);
-        } else if ((yAxisValue < -Constants.kControllerDeadband) && !limitTrigger.get()) {
-            angulationCoralSetPower(-0.15);
+        double adjustedValue = -yAxisValue; 
+    
+        if (Math.abs(adjustedValue) > Constants.kControllerDeadband) {
+            if (adjustedValue > 0) {
+                angulationCoralSetPower(0.10);
+            } else if (!limitTrigger.get()) {
+                angulationCoralSetPower(-0.10);
+            }
         } else {
             angulationCoralSetPower(0);
         }
     }
-
+    
+        
     public void controlCoralAngulationWithPOV(int pov) {
         if (pov == 0) {
             angulationCoralSetPower(0.15);
@@ -99,5 +103,4 @@ public class IntakeSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("TriggerSwitchCoral", limitTrigger.get());
         SmartDashboard.putNumber("Coral Angulation Value", angulationEncoder.getPosition());
     }
-
 }
