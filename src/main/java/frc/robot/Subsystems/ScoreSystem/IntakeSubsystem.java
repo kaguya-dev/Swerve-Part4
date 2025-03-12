@@ -11,6 +11,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Utils.Constants;
@@ -24,8 +25,9 @@ public class IntakeSubsystem extends SubsystemBase{
     //PID Controller
     private PIDController coralIntakePID;
 
-    //Encoders
+    //Encoders and Triggers
     private RelativeEncoder angulationEncoder;
+    private DigitalInput limitTrigger;
 
     //Configurators
     private SparkMaxConfig angulationCoralConfig;
@@ -41,6 +43,7 @@ public class IntakeSubsystem extends SubsystemBase{
         angulationCoral.configure(angulationCoralConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         angulationEncoder = angulationCoral.getEncoder();
+        limitTrigger = new DigitalInput(Constants.kMicroSwitchPWMPort);
 
     }
 
