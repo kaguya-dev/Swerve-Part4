@@ -18,44 +18,52 @@ import frc.robot.Utils.Constants;
 public class IntakeSubsystem extends SubsystemBase{
 
     //Motors
-    private SparkMax angulationCoral;
+    private SparkMax angulationCoralMotor;
     private VictorSPX coralIntake;
-
+    
     //PID Controller
     private PIDController coralIntakePID;
 
     //Encoders
-    private RelativeEncoder angulationEncoder;
+    
+    private RelativeEncoder coralAngulationEncoder;
 
     //Configurators
     private SparkMaxConfig angulationCoralConfig;
 
     public IntakeSubsystem(){
-        angulationCoral = new SparkMax(Constants.kIntakeAngularCoralMotorID, MotorType.kBrushless);
+        angulationCoralMotor = new SparkMax(Constants.kIntakeAngularCoralMotorID, MotorType.kBrushless);
         angulationCoralConfig = new SparkMaxConfig();
         coralIntake = new VictorSPX(Constants.kIntakeCoralMotorID);
+        
+
         coralIntakePID = new PIDController(Constants.kCoralIntakeKP, Constants.kCoralIntakeKI, Constants.kCoralIntakeKD);
         coralIntakePID.enableContinuousInput(0, 0.02);
 
+        //algaeAngulationEncoder = angulationCoralMotor.getAlternateEncoder();
+        //angulationCoralConfig.alternateEncoder.countsPerRevolution(360);
         angulationCoralConfig.idleMode(IdleMode.kBrake);
-        angulationCoral.configure(angulationCoralConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        angulationCoralMotor.configure(angulationCoralConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        angulationEncoder = angulationCoral.getEncoder();
-
+        //algaeAngulationEncoder = algaeIntakeRight.getAlternateEncoder();
+        coralAngulationEncoder = angulationCoralMotor.getEncoder();
     }
-
 
     /**
      * @param position put in degrees
      */
     public void setCoralAngularPosition(double position){
-        double power = coralIntakePID.calculate(angulationEncoder.getPosition(), position);
+        double power = coralIntakePID.calculate(coralAngulationEncoder.getPosition(), position);
         angulationCoralSetPower(power);
     }
 
     public void angulationCoralSetPower(double power){
-        angulationCoral.set(power);
+        angulationCoralMotor.set(power);
     }
+
+    // public void algaeAngulation(double power){
+    //     algaeAngulation1.set(ControlMode.PercentOutput, power);
+    // }
 
     public void coralDisable(){
         coralIntake.set(ControlMode.PercentOutput, 0);
@@ -65,24 +73,20 @@ public class IntakeSubsystem extends SubsystemBase{
         coralIntake.set(ControlMode.PercentOutput, power);
     }
 
-    // public void algaeIntake(double power, boolean input){
-    //     if(input){
-    //         algaeIntakeLeft.set(power);
-    //         algaeIntakeRight.set(power);
-    //     }else{
-    //         algaeIntakeLeft.set(power);
-    //         algaeIntakeRight.set(power);
-    //     }
-    // }
-
-    // public void algaeIntakeDisable(){
-    //     algaeIntakeLeft.set(0);
-    //     algaeIntakeRight.set(0);
-    // }
-
+    public void controlCoralAngulation(double yAxisValue) {
+        if (yAxisValue > Constants.kControllerDeadband) {
+            angulationCoralSetPower(0.15);
+        } else if (yAxisValue < -Constants.kControllerDeadband) {
+            angulationCoralSetPower(-0.15);
+        } else {
+            angulationCoralSetPower(0);
+        }
+    }
+   
     @Override
     public void periodic(){
-        SmartDashboard.putNumber("Coral Angulation Value", angulationEncoder.getPosition());
+        //SmartDashboard.putNumber("Algae Angulation Value", algaeAngulationEncoder.getPosition());
+        SmartDashboard.putNumber("Coral Angulation Value", coralAngulationEncoder.getPosition());
     }
 
 }

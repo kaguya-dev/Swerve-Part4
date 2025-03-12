@@ -46,6 +46,7 @@ public class RobotContainer {
 
     private void configureBindings() {
         new JoystickButton(ps1, 4).whileTrue(Commands.run(() -> imu.resetYaw()));
+        
         //Elevator
         new Trigger(()-> ps2.getL2Button())
         .whileTrue(new ElevatorJS(()-> true, ()-> false));
@@ -53,15 +54,18 @@ public class RobotContainer {
         new Trigger(()-> ps2.getL1Button())
         .whileTrue(new ElevatorJS(()-> false, ()-> true));
 
-          //intake coral 
-          new Trigger(()-> ps2.getR2Button())
-          .whileTrue(Commands.run(()-> intake.coralIntake(0.35)))
-          .whileFalse(Commands.run(()-> intake.coralDisable()));
+        //intake coral 
+        new Trigger(()-> ps2.getR2Button())
+        .whileTrue(Commands.run(()-> intake.coralIntake(0.35)))
+        .whileFalse(Commands.run(()-> intake.coralDisable()));
 
-          new Trigger(()-> ps2.getR1Button())
-          .whileTrue(Commands.run(()-> intake.coralIntake(-0.35)))
-          .whileFalse(Commands.run(()-> intake.coralDisable()));
-        
+        new Trigger(()-> ps2.getR1Button())
+        .whileTrue(Commands.run(()-> intake.coralIntake(-0.35)))
+        .whileFalse(Commands.run(()-> intake.coralDisable()));
+
+        //Coral angulation
+        new Trigger(() -> Math.abs(ps2.getLeftY()) > Constants.kControllerDeadband)
+        .whileTrue(Commands.run(() -> intake.controlCoralAngulation(ps2.getLeftY())));
     }
 
     public static Rotation2d getGyroAngleAsR2D() {
