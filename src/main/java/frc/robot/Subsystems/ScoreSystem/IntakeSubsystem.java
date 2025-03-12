@@ -113,21 +113,7 @@ public class IntakeSubsystem extends SubsystemBase{
         coralIntake.set(ControlMode.PercentOutput, power);
     }
 
-    // public void algaeIntake(double power, boolean input){
-    //     if(input){
-    //         algaeIntakeLeft.set(power);
-    //         algaeIntakeRight.set(power);
-    //     }else{
-    //         algaeIntakeLeft.set(power);
-    //         algaeIntakeRight.set(power);
-    //     }
-    // }
-
-    // public void algaeIntakeDisable(){
-    //     algaeIntakeLeft.set(0);
-    //     algaeIntakeRight.set(0);
-    // }
-
+   
     @Override
     public void periodic(){
         //SmartDashboard.putNumber("Algae Angulation Value", algaeAngulationEncoder.getPosition());

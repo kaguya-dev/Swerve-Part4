@@ -1,5 +1,7 @@
 package frc.robot;
 
+import org.ejml.sparse.ComputePermutation;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.PS5Controller;
@@ -21,7 +23,6 @@ public class RobotContainer {
     public static IMUSubsystem imu;
     public static ElevatorSubsystem elevatorEneable;
     public static IntakeSubsystem intake;
-
     public PS5Controller ps1, ps2;
 
     public RobotContainer() {
@@ -45,33 +46,22 @@ public class RobotContainer {
 
     private void configureBindings() {
         new JoystickButton(ps1, 4).whileTrue(Commands.run(() -> imu.resetYaw()));
+        //Elevator
+        new Trigger(()-> ps2.getL2Button())
+        .whileTrue(new ElevatorJS(()-> true, ()-> false));
+
+        new Trigger(()-> ps2.getL1Button())
+        .whileTrue(new ElevatorJS(()-> false, ()-> true));
+
+          //intake coral 
+          new Trigger(()-> ps2.getR2Button())
+          .whileTrue(Commands.run(()-> intake.coralIntake(0.35)))
+          .whileFalse(Commands.run(()-> intake.coralDisable()));
+
+          new Trigger(()-> ps2.getR1Button())
+          .whileTrue(Commands.run(()-> intake.coralIntake(-0.35)))
+          .whileFalse(Commands.run(()-> intake.coralDisable()));
         
-            //angulation coral 
-            new Trigger(()-> ps2.getL2Button())
-            .whileTrue(Commands.run(()->intake.angulationCoralSetPower(-0.10)))
-            .whileFalse(Commands.run(()->intake.angulationCoralSetPower(0)));
-
-            new Trigger(()-> ps2.getR2Button())
-            .whileTrue(Commands.run(()->intake.angulationCoralSetPower(0.10)))
-            .whileFalse(Commands.run(()->intake.angulationCoralSetPower(0)));
-
-            //intake coral 
-            new Trigger(()-> ps2.getR1Button())
-            .whileTrue(Commands.run(()-> intake.coralIntake(0.35)))
-            .whileFalse(Commands.run(()-> intake.coralDisable()));
-
-            new Trigger(()-> ps2.getL1Button())
-            .whileTrue(Commands.run(()-> intake.coralIntake(-0.35)))
-            .whileFalse(Commands.run(()-> intake.coralDisable()));
-
-            //elevator
-            new Trigger(()-> ps2.getTriangleButton())
-            .whileTrue(new ElevatorJS(()-> true, ()-> false));
-
-            new Trigger(()-> ps2.getCrossButton())
-            .whileTrue(new ElevatorJS(()-> false, ()-> true));
-
-
     }
 
     public static Rotation2d getGyroAngleAsR2D() {

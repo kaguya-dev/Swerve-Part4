@@ -21,31 +21,31 @@ public class AutoElevator extends Command {
     @Override
     public void initialize() {
         encoder.setPosition(0);
-        coralCollection.initialize();
+        //coralCollection.initialize();
     }
 
     @Override
     public void execute() {
-        coralCollection.angleCoral(); 
+        // coralCollection.angleCoral(); 
 
-        if (coralCollection.isAngulated()) { 
-            if (coralCollection.pieceOn()) {
-                if (encoder.getPosition() < targetRotations) {
-                    elevator.powerElevator(-0.4); 
-                } else {
-                    elevator.elevatorDisable();
-                }
-            } else {
-                if (encoder.getPosition() > 0) {
-                    elevator.powerElevator(0.4); 
-                } else {
-                    elevator.elevatorDisable(); 
-                }
-            }
-        } else {
-            elevator.elevatorDisable(); 
+        // if (coralCollection.isAngulated()) { 
+        //     if (coralCollection.pieceOn()) {
+        //         if (encoder.getPosition() < targetRotations) {
+        //             elevator.powerElevator(-0.4); 
+        //         } else {
+        //             elevator.elevatorDisable();
+        //         }
+        //     } else {
+        //         if (encoder.getPosition() > 0) {
+        //             elevator.powerElevator(0.4); 
+        //         } else {
+        //             elevator.elevatorDisable(); 
+        //         }
+        //     }
+        // } else {
+        //     elevator.elevatorDisable(); 
         }
-    }
+    
 
     @Override
     public void end(boolean interrupted) {

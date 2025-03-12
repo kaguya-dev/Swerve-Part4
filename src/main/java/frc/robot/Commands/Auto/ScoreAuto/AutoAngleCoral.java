@@ -19,23 +19,23 @@ public class AutoAngleCoral {
         this.targetRotations = 8;
     }
 
-    public void initialize() {
-        encoder.setPosition(0); 
-    }
+    // public void initialize() {
+    //     encoder.setPosition(0); 
+    // }
 
-    public void angleCoral() {
-        if (encoder.getPosition() < targetRotations) {
-            motor.set(0.4); //Verificar se é positivo ou negativo 
-        } else {
-            motor.set(0); 
-        }
-    }
+    // public void angleCoral() {
+    //     if (encoder.getPosition() < targetRotations) {
+    //         motor.set(0.4); //Verificar se é positivo ou negativo 
+    //     } else {
+    //         motor.set(0); 
+    //     }
+    // }
 
-    public boolean isAngulated() {
-        return encoder.getPosition() >= targetRotations;
-    }
+    // public boolean isAngulated() {
+    //     return encoder.getPosition() >= targetRotations;
+    // }
 
-    public boolean pieceOn() {
-        return infrared.get();
-    }
+    // public boolean pieceOn() {
+    //     return infrared.get();
+    // }
 }
