@@ -43,7 +43,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         rightMotorConfig.idleMode(IdleMode.kBrake); 
 
         elevatorEncoder = leftMotor.getEncoder();
-        calibrationSwitch = new DigitalInput(Constants.kMicroSwitchPWMPort);
+        calibrationSwitch = new DigitalInput(9);
         isAtMaxHeight = false;
         
         leftMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

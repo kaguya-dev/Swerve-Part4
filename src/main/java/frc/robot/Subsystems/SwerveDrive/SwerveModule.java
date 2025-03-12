@@ -77,10 +77,7 @@ public class SwerveModule extends SubsystemBase{
     }
 
     public void isRight(boolean right){
-        if(right)
-            isRight = true;
-        else   
-            isRight = false;
+        isRight = right;
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {

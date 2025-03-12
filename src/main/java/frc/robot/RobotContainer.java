@@ -38,16 +38,16 @@ public class RobotContainer {
         intake = new IntakeSubsystem();
         ps1 = new PS5Controller(Constants.kDriveControllerID);
         ps2 = new PS5Controller(Constants.kScoreControllerID);
-        pdh = new PowerDistribution(0, ModuleType.kRev);
+        //pdh = new PowerDistribution(0, ModuleType.kRev);
         configureBindings();
 
-        Shuffleboard.getTab("Voltage").addDouble("VoltageValue", () -> pdh.getVoltage())
-                .withWidget(BuiltInWidgets.kVoltageView);
+        //Shuffleboard.getTab("Voltage").addDouble("VoltageValue", () -> pdh.getVoltage())
+        //        .withWidget(BuiltInWidgets.kVoltageView);
 
         driver.setDefaultCommand(
                 new Drive(
                         () -> ps1.getLeftX(),
-                        () -> -ps1.getLeftY(),
+                        () -> ps1.getLeftY(),
                         () -> ps1.getRightX() * 0.6,
                         () -> imu.getIMUAvaliable()));
     }
