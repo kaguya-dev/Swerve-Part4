@@ -140,8 +140,8 @@ public class Constants {
     public static final int kPigeonID = 15;
 
     // Maximum Speed
-    public static final double kMaxSpeed = 1; // Maximum speed in meters per second
-    public static final double kMaxPower = 0.3; // Maximum power output
+    public static final double kMaxSpeed = 0.5; // Maximum speed in meters per second
+    public static final double kMaxPower = 0.1; // Maximum power output
     public static final double kMaxAngularSpeed = 1; // Maximum angular speed in radians per second
 
     // Deadbands
@@ -184,7 +184,7 @@ public class Constants {
     public static final double kElevatorKD = 0; // Derivative constant for elevator control
 
     // Elevator values
-    public static final double kElevatorSpeedClamper = 0.75; // Speed limit for the elevator
+    public static final double kElevatorSpeedClamper = 1; // Speed limit for the elevator
     public static final double kMaxHeight = 0; // Maximum height for the elevator
 
     // Alerts

@@ -45,8 +45,8 @@ public class RobotContainer {
 
         driver.setDefaultCommand(
                 new Drive(
-                        () -> ps1.getLeftX(),
-                        () -> ps1.getLeftY(),
+                        () -> -ps1.getLeftX(),
+                        () -> -ps1.getLeftY(),
                         () -> ps1.getRightX() * 0.6,
                         () -> imu.getIMUAvaliable()));
     }
@@ -55,22 +55,22 @@ public class RobotContainer {
         new JoystickButton(ps1, 4).whileTrue(Commands.run(() -> imu.resetYaw()));
 
         // Elevator
-        new Trigger(() -> ps2.getR1Button())
+        new Trigger(() -> ps2.getL1Button())
         .whileTrue(new ElevatorJS(() -> true, () -> false));
 
-        new Trigger(() -> ps2.getL1Button())
+        new Trigger(() -> ps2.getR1Button())
         .whileTrue(new ElevatorJS(() -> false, () -> true));
 
         // intake coral
         new Trigger(() -> ps2.getR2Button())
-        .whileTrue(Commands.run(() -> intake.coralIntake(0.35)))
+        .whileTrue(Commands.run(() -> intake.coralIntake(0.75)))
         .whileFalse(Commands.run(() -> intake.coralDisable()));
 
         new Trigger(() -> ps2.getL2Button())
-        .whileTrue(Commands.run(() -> intake.coralIntake(-0.35)))
+        .whileTrue(Commands.run(() -> intake.coralIntake(-0.75)))
         .whileFalse(Commands.run(() -> intake.coralDisable()));
 
-        new Trigger(() -> Math.abs(ps2.getLeftY()) > Constants.kControllerDeadband)
+        new Trigger(() -> Math.abs(ps2.getLeftY()) > 0)
         .whileTrue(Commands.run(() -> intake.controlCoralAngulationWithAnalog(ps2.getLeftY())))
         .whileFalse(Commands.run(()-> intake.angulationCoralSetPower(0)));
     }

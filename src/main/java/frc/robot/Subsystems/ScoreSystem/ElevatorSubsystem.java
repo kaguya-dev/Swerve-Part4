@@ -20,9 +20,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private SparkMax leftMotor;
     private SparkMax rightMotor;
+    private double[] lHeights = {0,0,0,0};
     private RelativeEncoder elevatorEncoder;
     private DigitalInput calibrationSwitch;
-    private boolean isAtMaxHeight;
+    private boolean zeroPoint;
     private SparkMaxConfig leftMotorConfig;
     private SparkMaxConfig rightMotorConfig;
     private PIDController elevatorPIDController;
@@ -44,10 +45,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         elevatorEncoder = leftMotor.getEncoder();
         calibrationSwitch = new DigitalInput(9);
-        isAtMaxHeight = false;
+        zeroPoint = true;
         
         leftMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         rightMotor.configure(rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        
 
         Shuffleboard.getTab("ScoreSystem").addBoolean("CalibrationSwitch", () -> calibrationSwitch.get());
         Shuffleboard.getTab("ScoreSystem").addDouble("ElevatorPosition", () -> elevatorEncoder.getPosition());
@@ -57,8 +60,16 @@ public class ElevatorSubsystem extends SubsystemBase {
         //power = MathUtil.clamp(power, -0.65, 0.65);
         SmartDashboard.putNumber("Elevator Power", power);
 
-        leftMotor.set(power);
-        rightMotor.set(power);
+        
+        if (!zeroPoint) {
+            leftMotor.set(power);
+            rightMotor.set(power);
+        } else {
+            //leftMotor.set(MathUtil.clamp(power, -1, 0));
+            //rightMotor.set(MathUtil.clamp(power, -1, 0));
+            leftMotor.set(power);
+            rightMotor.set(power);
+        }
     }
 
     public void elevatorDisable() {
@@ -74,11 +85,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void setElevator(double position) {
         double output = elevatorPIDController.calculate(elevatorEncoder.getPosition(), position);
 
-        if (position < Constants.kMaxHeight) {
-            isAtMaxHeight = false; 
+        if (!zeroPoint) {
             powerElevator(output); 
         } else {
-            isAtMaxHeight = true; 
+            MathUtil.clamp(output, 0, Constants.kElevatorSpeedClamper);
         }
     }
 
@@ -89,9 +99,16 @@ public class ElevatorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (calibrationSwitch.get()) {
-            lowCalibratePID();
+            //lowCalibratePID();
         }
-        
-    SmartDashboard.putNumber("Elevator Encoder Position", elevatorEncoder.getPosition());
+
+        if(-elevatorEncoder.getPosition() > 0){
+            zeroPoint = false;
+        }else{
+            zeroPoint = true;
+        }
+
+    SmartDashboard.putNumber("Elevator Encoder Position", -elevatorEncoder.getPosition());
+    SmartDashboard.putBoolean("ZeroPointed Elevator", zeroPoint);
     }
 }
