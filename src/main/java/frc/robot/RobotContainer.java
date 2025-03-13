@@ -1,7 +1,5 @@
 package frc.robot;
 
-import org.ejml.sparse.ComputePermutation;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.PS5Controller;
@@ -9,7 +7,6 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -40,6 +37,7 @@ public class RobotContainer {
         ps1 = new PS5Controller(Constants.kDriveControllerID);
         ps2 = new PS5Controller(Constants.kScoreControllerID);
         //pdh = new PowerDistribution(0, ModuleType.kRev);
+        //pdh = new PowerDistribution(0, ModuleType.kRev);
         configureBindings();
 
         //Shuffleboard.getTab("Voltage").addDouble("VoltageValue", () -> pdh.getVoltage())
@@ -57,24 +55,24 @@ public class RobotContainer {
         new JoystickButton(ps1, 4).whileTrue(Commands.run(() -> imu.resetYaw()));
 
         // Elevator
-        new Trigger(() -> ps2.getL2Button())
-                .whileTrue(new ElevatorJS(() -> true, () -> false));
+        new Trigger(() -> ps2.getR1Button())
+        .whileTrue(new ElevatorJS(() -> true, () -> false));
 
         new Trigger(() -> ps2.getL1Button())
-                .whileTrue(new ElevatorJS(() -> false, () -> true));
+        .whileTrue(new ElevatorJS(() -> false, () -> true));
 
         // intake coral
         new Trigger(() -> ps2.getR2Button())
-                .whileTrue(Commands.run(() -> intake.coralIntake(0.35)))
-                .whileFalse(Commands.run(() -> intake.coralDisable()));
+        .whileTrue(Commands.run(() -> intake.coralIntake(0.35)))
+        .whileFalse(Commands.run(() -> intake.coralDisable()));
 
-        new Trigger(() -> ps2.getR1Button())
-                .whileTrue(Commands.run(() -> intake.coralIntake(-0.35)))
-                .whileFalse(Commands.run(() -> intake.coralDisable()));
+        new Trigger(() -> ps2.getL2Button())
+        .whileTrue(Commands.run(() -> intake.coralIntake(-0.35)))
+        .whileFalse(Commands.run(() -> intake.coralDisable()));
 
-        // Coral angulation
         new Trigger(() -> Math.abs(ps2.getLeftY()) > Constants.kControllerDeadband)
-                .whileTrue(Commands.run(() -> intake.controlCoralAngulationWithAnalog(ps2.getLeftY())));
+        .whileTrue(Commands.run(() -> intake.controlCoralAngulationWithAnalog(ps2.getLeftY())))
+        .whileFalse(Commands.run(()-> intake.angulationCoralSetPower(0)));
     }
 
     public static Rotation2d getGyroAngleAsR2D() {

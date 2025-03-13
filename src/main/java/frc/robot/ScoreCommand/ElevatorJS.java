@@ -19,9 +19,9 @@ public class ElevatorJS extends Command {
     @Override 
     public void execute() {
         if (leftButton.getAsBoolean()) {
-            RobotContainer.elevatorEneable.powerElevator(0.5);
+            RobotContainer.elevatorEneable.powerElevator(1);
         } else if (rightButton.getAsBoolean()) {
-            RobotContainer.elevatorEneable.powerElevator(-0.5);
+            RobotContainer.elevatorEneable.powerElevator(-1);
         } else {
             RobotContainer.elevatorEneable.powerElevator(0);
         }
