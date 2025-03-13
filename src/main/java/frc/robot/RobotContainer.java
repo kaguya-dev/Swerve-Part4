@@ -21,6 +21,7 @@ import frc.robot.Subsystems.ScoreSystem.IntakeSubsystem;
 import frc.robot.Subsystems.Sensors.IMUSubsystem;
 import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
 import frc.robot.Utils.Constants;
+//import frc.robot.Utils.Constants.Controllers;
 
 public class RobotContainer {
     public ChassisSpeeds swerveChassis;
@@ -29,7 +30,7 @@ public class RobotContainer {
     public static ElevatorSubsystem elevatorEneable;
     public static IntakeSubsystem intake;
     public static PowerDistribution pdh;
-    public PS5Controller ps1, ps2;
+    private PS5Controller ps1, ps2;
 
     public RobotContainer() {
         imu = new IMUSubsystem();
