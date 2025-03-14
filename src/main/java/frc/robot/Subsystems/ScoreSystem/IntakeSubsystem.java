@@ -90,9 +90,9 @@ public class IntakeSubsystem extends SubsystemBase {
         
     public void controlCoralAngulationWithPOV(int pov) {
         if (pov == 0) {
-            angulationCoralSetPower(0.15);
+            angulationCoralSetPower(0.10);
         } else if ((pov == 180) && !limitTrigger.get()) {
-            angulationCoralSetPower(-0.15);
+            angulationCoralSetPower(-0.10);
         } else {
             angulationCoralSetPower(0);
         }
