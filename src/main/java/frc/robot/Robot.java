@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Commands.Auto.DriveAuto.DriveForwardAuto;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -34,7 +35,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = new DriveForwardAuto();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

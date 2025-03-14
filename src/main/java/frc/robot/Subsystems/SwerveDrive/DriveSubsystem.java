@@ -76,11 +76,13 @@ public class DriveSubsystem extends SubsystemBase {
         }
     }
 
-    private SwerveModulePosition[] getPositions() {
+    public SwerveModulePosition[] getPositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
         for (int i = 0; i < swerveMods.length; i++) {
             positions[i] = swerveMods[i].getPosition();
         }
         return positions;
     }
+
+   
 }

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Commands.Auto.DriveAuto.DriveForwardAuto;
 import frc.robot.Commands.TeleopSwerve.Drive;
 import frc.robot.ScoreCommand.ElevatorJS;
 import frc.robot.Subsystems.ScoreSystem.ElevatorSubsystem;
@@ -18,7 +19,6 @@ import frc.robot.Subsystems.ScoreSystem.IntakeSubsystem;
 import frc.robot.Subsystems.Sensors.IMUSubsystem;
 import frc.robot.Subsystems.SwerveDrive.DriveSubsystem;
 import frc.robot.Utils.Constants;
-//import frc.robot.Utils.Constants.Controllers;
 
 public class RobotContainer {
     public ChassisSpeeds swerveChassis;
@@ -28,6 +28,7 @@ public class RobotContainer {
     public static IntakeSubsystem intake;
     public static PowerDistribution pdh;
     private PS5Controller ps1, ps2;
+    private final DriveForwardAuto autoCommand;
 
     public RobotContainer() {
         imu = new IMUSubsystem();
@@ -36,12 +37,8 @@ public class RobotContainer {
         intake = new IntakeSubsystem();
         ps1 = new PS5Controller(Constants.kDriveControllerID);
         ps2 = new PS5Controller(Constants.kScoreControllerID);
-        //pdh = new PowerDistribution(0, ModuleType.kRev);
-        //pdh = new PowerDistribution(0, ModuleType.kRev);
+        autoCommand = new DriveForwardAuto();
         configureBindings();
-
-        //Shuffleboard.getTab("Voltage").addDouble("VoltageValue", () -> pdh.getVoltage())
-        //        .withWidget(BuiltInWidgets.kVoltageView);
 
         driver.setDefaultCommand(
                 new Drive(
@@ -87,6 +84,8 @@ public class RobotContainer {
         //SET COLLECT POINT
         new Trigger((() -> ps2.getTriangleButton()))
         .whileTrue(Commands.run(() -> elevatorEneable.setLPos(3))); 
+
+        
     }
 
     public static Rotation2d getGyroAngleAsR2D() {
@@ -94,6 +93,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        return autoCommand;
     }
 }

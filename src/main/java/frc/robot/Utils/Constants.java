@@ -140,16 +140,16 @@ public class Constants {
     public static final int kPigeonID = 15;
 
     // Maximum Speed
-    public static final double kMaxSpeed = 0.5; // Maximum speed in meters per second
-    public static final double kMaxPower = 0.2; // Maximum power output
+    public static final double kMaxSpeed = 1; // Maximum speed in meters per second
+    public static final double kMaxPower = 0.4; // Maximum power output
     public static final double kMaxAngularSpeed = 1; // Maximum angular speed in radians per second
 
     // Deadbands
     public static final double kControllerDeadband = 0.05; // Deadband for controller inputs
 
     // PID Constants for Swerve
-    public static final double kSwerveAngleKP = 0.005;
-    public static final double kSwerveAngleKI = 0.000003;
+    public static final double kSwerveAngleKP = 0.006;
+    public static final double kSwerveAngleKI = 0.000005;
     public static final double kSwerveAngleKD = 0.000;
 
     // Array of PID constants for swerve
