@@ -73,6 +73,20 @@ public class RobotContainer {
         new Trigger(() -> Math.abs(ps2.getLeftY()) > 0)
         .whileTrue(Commands.run(() -> intake.controlCoralAngulationWithAnalog(ps2.getLeftY())))
         .whileFalse(Commands.run(()-> intake.angulationCoralSetPower(0)));
+
+        //SET ELEVATOR HEIGHTS
+        //SET L1 HEIGHT
+        new Trigger((() -> ps2.getCrossButton()))
+        .whileTrue(Commands.run(() -> elevatorEneable.setLPos(0)));
+        //SET L2 HEIGHT
+        new Trigger((() -> ps2.getSquareButton()))
+        .whileTrue(Commands.run(() -> elevatorEneable.setLPos(1)));
+        //SET L3 HEIGHT 
+        new Trigger((() -> ps2.getCircleButton()))
+        .whileTrue(Commands.run(() -> elevatorEneable.setLPos(2)));
+        //SET COLLECT POINT
+        new Trigger((() -> ps2.getTriangleButton()))
+        .whileTrue(Commands.run(() -> elevatorEneable.setLPos(3))); 
     }
 
     public static Rotation2d getGyroAngleAsR2D() {

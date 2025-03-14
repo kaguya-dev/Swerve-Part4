@@ -141,7 +141,7 @@ public class Constants {
 
     // Maximum Speed
     public static final double kMaxSpeed = 0.5; // Maximum speed in meters per second
-    public static final double kMaxPower = 0.1; // Maximum power output
+    public static final double kMaxPower = 0.2; // Maximum power output
     public static final double kMaxAngularSpeed = 1; // Maximum angular speed in radians per second
 
     // Deadbands

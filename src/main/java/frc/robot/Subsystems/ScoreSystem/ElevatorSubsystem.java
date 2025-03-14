@@ -20,7 +20,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private SparkMax leftMotor;
     private SparkMax rightMotor;
-    private double[] lHeights = {0,0,0,0};
+    private double[] lHeights = {50,100,150,200};
+    private double actualPosLimit = 0;
     private RelativeEncoder elevatorEncoder;
     private DigitalInput calibrationSwitch;
     private boolean zeroPoint;
@@ -96,6 +97,27 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorEncoder.setPosition(0);
     }
 
+    public void setLPos(int posID){
+        switch (posID) {
+            //L1
+            case 0:
+                actualPosLimit = lHeights[0];
+                break;
+            //L2
+            case 1:
+                actualPosLimit = lHeights[1];
+                break;
+            //L3
+            case 2: 
+                actualPosLimit = lHeights[2];
+                break;
+            //Collect Point
+            case 3:
+                actualPosLimit = lHeights[3];
+                break;
+        }
+    }
+
     @Override
     public void periodic() {
         if (calibrationSwitch.get()) {
@@ -109,6 +131,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         }
 
     SmartDashboard.putNumber("Elevator Encoder Position", -elevatorEncoder.getPosition());
+    SmartDashboard.putNumber("ActualLimitPos", actualPosLimit);
     SmartDashboard.putBoolean("ZeroPointed Elevator", zeroPoint);
     }
 }

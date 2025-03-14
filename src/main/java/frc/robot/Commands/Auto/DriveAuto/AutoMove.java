@@ -25,8 +25,7 @@ public class AutoMove extends Command{
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        super.execute();
+        
     }
 
     @Override
