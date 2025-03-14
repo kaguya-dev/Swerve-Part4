@@ -4,6 +4,8 @@ package frc.robot.Utils;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 
 /**
@@ -33,28 +35,28 @@ public class Constants {
                 MOTOR_LEFT_DRIVER_FRONT,
                 CANCODER_FRONT_LEFT,
                 CANCODER_FRONT_LEFT_OFFSET,
-                2, true),
+                0, true),
 
         MOD1(// Front Right (Inverted)
                 MOTOR_RIGHT_ANGULAR_FRONT,
                 MOTOR_RIGHT_DRIVER_FRONT,
                 CANCODER_FRONT_RIGHT,
                 CANCODER_FRONT_RIGHT_OFFSET,
-                3, false),
+                2, false),
 
         MOD2(// Back Left (Inverted)
                 MOTOR_LEFT_ANGULAR_BACK,
                 MOTOR_LEFT_DRIVER_BACK,
                 CANCODER_BACK_LEFT,
                 CANCODER_BACK_LEFT_OFFSET,
-                0, false),
+                1, false),
 
         MOD3(// Back Right (Inverted)
                 MOTOR_RIGHT_ANGULAR_BACK,
                 MOTOR_RIGHT_DRIVER_BACK,
                 CANCODER_BACK_RIGHT,
                 CANCODER_BACK_RIGHT_OFFSET,
-                1, false);
+                3, false);
 
         public int getModuleNumber() {
             return moduleNumber;
@@ -112,25 +114,25 @@ public class Constants {
     public static final int MOTOR_LEFT_DRIVER_FRONT = 1;
     public static final int MOTOR_LEFT_ANGULAR_FRONT = 2;
     public static final int CANCODER_FRONT_LEFT = 21;
-    public static final double CANCODER_FRONT_LEFT_OFFSET = -0.20849609375;
+    public static final double CANCODER_FRONT_LEFT_OFFSET = -0;
 
     // BACK LEFT
     public static final int MOTOR_LEFT_DRIVER_BACK = 3;
     public static final int MOTOR_LEFT_ANGULAR_BACK = 4;
     public static final int CANCODER_BACK_LEFT = 22;
-    public static final double CANCODER_BACK_LEFT_OFFSET = -0.006103515625;
+    public static final double CANCODER_BACK_LEFT_OFFSET = -0;
 
     // FRONTAL RIGHT
     public static final int MOTOR_RIGHT_DRIVER_BACK = 5;
     public static final int MOTOR_RIGHT_ANGULAR_BACK = 6;
     public static final int CANCODER_FRONT_RIGHT = 23;
-    public static final double CANCODER_FRONT_RIGHT_OFFSET = -0.76171875;
+    public static final double CANCODER_FRONT_RIGHT_OFFSET = 0.5;
 
     // BACK RIGHT
     public static final int MOTOR_RIGHT_DRIVER_FRONT = 7;
     public static final int MOTOR_RIGHT_ANGULAR_FRONT = 8;
     public static final int CANCODER_BACK_RIGHT = 24;
-    public static final double CANCODER_BACK_RIGHT_OFFSET = -0.209228515625;
+    public static final double CANCODER_BACK_RIGHT_OFFSET = 0.5;
 
     // Joystick & Pigeon Configuration
     public static final int kDriveControllerID = 0;
@@ -138,8 +140,8 @@ public class Constants {
     public static final int kPigeonID = 15;
 
     // Maximum Speed
-    public static final double kMaxSpeed = 1; // Maximum speed in meters per second
-    public static final double kMaxPower = 0.3; // Maximum power output
+    public static final double kMaxSpeed = 0.5; // Maximum speed in meters per second
+    public static final double kMaxPower = 0.2; // Maximum power output
     public static final double kMaxAngularSpeed = 1; // Maximum angular speed in radians per second
 
     // Deadbands
@@ -148,7 +150,7 @@ public class Constants {
     // PID Constants for Swerve
     public static final double kSwerveAngleKP = 0.005;
     public static final double kSwerveAngleKI = 0.000003;
-    public static final double kSwerveAngleKD = 0.0001;
+    public static final double kSwerveAngleKD = 0.000;
 
     // Array of PID constants for swerve
     public static final double[] PIDSwerve = { kSwerveAngleKD, kSwerveAngleKI, kSwerveAngleKD };
@@ -166,9 +168,6 @@ public class Constants {
     public static final double kCoralIntakeKI = 0; // Integral constant for intake control
     public static final double kCoralIntakeKD = 0; // Derivative constant for intake control
     
-    public static final double kAlgaeIntakeKP = 0.01; // Proportional constant for intake control
-    public static final double kAlgaeIntakeKI = 0; // Integral constant for intake control
-    public static final double kAlgaeIntakeKD = 0; // Derivative constant for intake control
 
     // Intake values
     public static final double coralIntakePower = 0.75; // Power for coral intake
@@ -185,7 +184,7 @@ public class Constants {
     public static final double kElevatorKD = 0; // Derivative constant for elevator control
 
     // Elevator values
-    public static final double kElevatorSpeedClamper = 0.75; // Speed limit for the elevator
+    public static final double kElevatorSpeedClamper = 1; // Speed limit for the elevator
     public static final double kMaxHeight = 0; // Maximum height for the elevator
 
     // Alerts

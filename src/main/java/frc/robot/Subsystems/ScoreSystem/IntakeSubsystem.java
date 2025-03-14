@@ -10,6 +10,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,6 +30,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // Encoders and Triggers
     private RelativeEncoder angulationEncoder;
     private DigitalInput limitTrigger;
+    private DigitalInput coralDetector;
 
     // Configurators
     private SparkMaxConfig angulationCoralConfig;
@@ -50,6 +53,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
         angulationEncoder = angulationCoral.getEncoder();
         limitTrigger = new DigitalInput(Constants.kMicroSwitchPWMPort);
+        coralDetector = new DigitalInput(Constants.kMicroSwitchPWMPort-1);
 
     }
 
@@ -75,12 +79,13 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void controlCoralAngulationWithAnalog(double yAxisValue) {
         double adjustedValue = -yAxisValue; 
+        SmartDashboard.putNumber("coralAngulationPower", adjustedValue);
     
         if (Math.abs(adjustedValue) > Constants.kControllerDeadband) {
-            if (adjustedValue > 0) {
-                angulationCoralSetPower(0.10);
-            } else if (!limitTrigger.get()) {
-                angulationCoralSetPower(-0.10);
+            if(!limitTrigger.get())
+                angulationCoralSetPower(adjustedValue/10);
+            else{
+                angulationCoralSetPower(MathUtil.clamp(adjustedValue, -1, 0));
             }
         } else {
             angulationCoralSetPower(0);
@@ -100,6 +105,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putBoolean("DetectorSwitchCoral", coralDetector.get());
         SmartDashboard.putBoolean("TriggerSwitchCoral", limitTrigger.get());
         SmartDashboard.putNumber("Coral Angulation Value", angulationEncoder.getPosition());
     }
